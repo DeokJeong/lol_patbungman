@@ -1,0 +1,90 @@
+/* CSS 정리 */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 62.5%; }
+ul,li { list-style: none; }
+a { text-decoration: none; color: inherit; }
+select { outline: none; }
+input { outline: none; border: none; }
+
+:root {
+    --card-bg-color: rgba(28, 32, 40, 0.9);
+    --card-border-color: rgba(255, 255, 255, 0.12);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.45);
+    --point-input-bg: #242830eb;
+    --blur: blur(18px) saturate(1.2);
+    --input-color: #e6eaf3;
+    --bora-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --button-height: 48px;
+    --input-height: 48px;
+}
+.card { margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; background: var(--card-bg-color); border-radius: 20px; box-shadow: var(--card-shadow); position: absolute; z-index: 1; left: 50%; top: 50%; transform: translate(-50%, -50%); max-width: 420px; width: calc(100% - 40px); backdrop-filter: var(--blur); border: 1.5px solid var(--card-border-color); gap: 20px; }
+.card form { width: 100%; }
+/* 라벨이 움직이는 INPUT */
+.pointInputDesign .pointInputField { position: relative; width: 100%; }
+.pointInputDesign .pointInputField label { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: auto; height: auto; line-height: 1; color: var(--input-color); font-size: 1.4rem; pointer-events: none; background: transparent; transition: all 0.22s cubic-bezier(.7,0,.3,1); z-index: 4; text-align: left; padding: 0 2px; border-radius: 3px; box-shadow: none; }
+.pointInputDesign .pointInputField input[type=text],.pointInputDesign input[type=password] { margin: 0; padding: 0 14px; display: block; width: 100%; height: var(--input-height); background: var(--point-input-bg); border: none; color: var(--input-color); font-size: 1.4rem; border-radius: 10px; outline: none; font-weight: 600; transition: background 0.2s; }
+.pointInputDesign .pointInputField input[type=text]:focus + label, 
+.pointInputDesign .pointInputField input[type=password]:focus + label,
+.pointInputDesign .pointInputField input[type=text]:not(:placeholder-shown) + label,
+.pointInputDesign .pointInputField input[type=password]:not(:placeholder-shown) + label {  top: -18px;  left: 8px;  transform: translateY(0);  font-size: 1.2rem;  color: var(--input-color);  background: transparent;  padding: 0 2px;  border-radius: 3px;  line-height: 1.2;  box-shadow: none;  letter-spacing: 0.04em; }
+.pointInputDesign .pointInputField .pwEyeIcon { position: absolute; top: 50%; right: 14px; transform: translateY(-50%); width: 24px;  height: 24px; cursor: pointer; }
+
+/* 동그라미 CHECKBOX 디자인 */
+.customCheckBox .checkboxWrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+}
+
+.customCheckBox input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(230, 234, 243, 0.3);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  outline: none;
+}
+
+.customCheckBox input[type="checkbox"]:checked {
+  background: var(--bora-gradient);
+  border: 1px solid var(--bora-gradient);
+}
+
+.customCheckBox input[type="checkbox"]:checked::before {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: var(--input-color);
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.customCheckBox .checkboxWrap label {
+  color: var(--input-color);
+  font-size: 1.4rem;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.3s ease;
+}
+
+.loginBox > form { width: 100%; display: flex; flex-direction: column; gap: 30px; }
+.loginBox > form > ul { width: 100%; display: flex; flex-direction: column; gap: 30px; }
+
+/* 로그인 버튼 스타일 */
+.fullBtn { width: 100%; height: var(--button-height); background: var(--bora-gradient); border: none; border-radius: 10px; color: white; font-size: 1.6rem; font-weight: 600; cursor: pointer; position: relative; overflow: hidden;  }
+
+/* 링크 박스 스타일 */
+.linkBox { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
+.linkBox a { color: rgba(230, 234, 243, 0.7); font-size: 1.3rem; text-decoration: none; padding: 8px 12px;  border-radius: 6px; transition: all 0.3s ease; position: relative; }
+.linkBox a:active { transform: translateY(0);}
+
+
