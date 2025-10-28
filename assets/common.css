@@ -30,51 +30,11 @@ input { outline: none; border: none; }
 .pointInputDesign .pointInputField .pwEyeIcon { position: absolute; top: 50%; right: 14px; transform: translateY(-50%); width: 24px;  height: 24px; cursor: pointer; }
 
 /* 동그라미 CHECKBOX 디자인 */
-.customCheckBox .checkboxWrap {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-}
-
-.customCheckBox input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 1px solid rgba(230, 234, 243, 0.3);
-  border-radius: 50%;
-  background: transparent;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  outline: none;
-}
-
-.customCheckBox input[type="checkbox"]:checked {
-  background: var(--bora-gradient);
-  border: 1px solid var(--bora-gradient);
-}
-
-.customCheckBox input[type="checkbox"]:checked::before {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: var(--input-color);
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.customCheckBox .checkboxWrap label {
-  color: var(--input-color);
-  font-size: 1.4rem;
-  cursor: pointer;
-  user-select: none;
-  transition: color 0.3s ease;
-}
+.customCheckBox .checkboxWrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.customCheckBox input[type="checkbox"] { appearance: none; -webkit-appearance: none; -moz-appearance: none; width: 20px; height: 20px; border: 1px solid rgba(230, 234, 243, 0.3); border-radius: 50%; background: transparent; cursor: pointer; position: relative; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); outline: none; }
+.customCheckBox input[type="checkbox"]:checked { background: var(--bora-gradient); border: 1px solid var(--bora-gradient); }
+.customCheckBox input[type="checkbox"]:checked::before { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--input-color); font-size: 12px; font-weight: bold;}
+.customCheckBox .checkboxWrap label { color: var(--input-color); font-size: 1.4rem; cursor: pointer; user-select: none; transition: color 0.3s ease;}
 
 .loginBox > form { width: 100%; display: flex; flex-direction: column; gap: 30px; }
 .loginBox > form > ul { width: 100%; display: flex; flex-direction: column; gap: 30px; }
@@ -83,8 +43,10 @@ input { outline: none; border: none; }
 .fullBtn { width: 100%; height: var(--button-height); background: var(--bora-gradient); border: none; border-radius: 10px; color: white; font-size: 1.6rem; font-weight: 600; cursor: pointer; position: relative; overflow: hidden;  }
 
 /* 링크 박스 스타일 */
-.linkBox { display: flex; justify-content: space-between; align-items: center; gap: 15px; }
-.linkBox a { color: rgba(230, 234, 243, 0.7); font-size: 1.3rem; text-decoration: none; padding: 8px 12px;  border-radius: 6px; transition: all 0.3s ease; position: relative; }
+.linkBox { display: flex; justify-content: center; align-items: center; gap: 10px; }
+.linkBox a::after { content: ''; display: block; width: 1px; height: 10px; background: var(--card-border-color); }
+.linkBox a { display: flex; align-items: center; justify-content: center; gap: 10px; color: var(--input-color); font-size: 1.3rem; line-height: 1.3rem; text-decoration: none; position: relative; }
+.linkBox a:last-child::after { display: none; }
 .linkBox a:active { transform: translateY(0);}
 
 
