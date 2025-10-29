@@ -16,9 +16,12 @@ input { outline: none; border: none; }
     --bora-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --button-height: 48px;
     --input-height: 48px;
+    --border-color : #667eea;
 }
-.card { margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; background: var(--card-bg-color); border-radius: 20px; box-shadow: var(--card-shadow); position: absolute; z-index: 1; left: 50%; top: 50%; transform: translate(-50%, -50%); max-width: 420px; width: calc(100% - 40px); backdrop-filter: var(--blur); border: 1.5px solid var(--card-border-color); gap: 20px; }
+.card { margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; background: var(--card-bg-color); border-radius: 20px; box-shadow: var(--card-shadow); position: absolute; z-index: 1; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(100% - 40px); backdrop-filter: var(--blur); border: 1.5px solid var(--card-border-color); gap: 20px; }
 .card form { width: 100%; }
+.grid { display: grid; }
+.grid5 { grid-template-columns: repeat(5, 1fr); gap: 10px; }
 /* 라벨이 움직이는 INPUT */
 .pointInputDesign .pointInputField { position: relative; width: 100%; }
 .pointInputDesign .pointInputField label { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: auto; height: auto; line-height: 1; color: var(--input-color); font-size: 1.4rem; pointer-events: none; background: transparent; transition: all 0.22s cubic-bezier(.7,0,.3,1); z-index: 4; text-align: left; padding: 0 2px; border-radius: 3px; box-shadow: none; }
@@ -29,6 +32,14 @@ input { outline: none; border: none; }
 .pointInputDesign .pointInputField input[type=password]:not(:placeholder-shown) + label {  top: -18px;  left: 8px;  transform: translateY(0);  font-size: 1.2rem;  color: var(--input-color);  background: transparent;  padding: 0 2px;  border-radius: 3px;  line-height: 1.2;  box-shadow: none;  letter-spacing: 0.04em; }
 .pointInputDesign .pointInputField .pwEyeIcon { position: absolute; top: 50%; right: 14px; transform: translateY(-50%); width: 24px;  height: 24px; cursor: pointer; }
 
+/* 기본 INPUT */
+.customInputBox { }
+.customInputBox label { display: block; margin-bottom: 10px; color: var(--input-color); font-size: 1.4rem; line-height: 1.4rem; font-weight: 600; }
+.customInputBox input[type=text], 
+.customInputBox input[type=password],
+.customInputBox input[type=email] { margin: 0; padding: 0 14px; display: block; width: 100%; height: var(--input-height); background: var(--point-input-bg); border: none; color: var(--input-color); font-size: 1.4rem; border-radius: 10px; outline: none; font-weight: 600; }
+.customInputBox input:focus { border: 2px solid var(--border-color); }
+
 /* 동그라미 CHECKBOX 디자인 */
 .customCheckBox .checkboxWrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 .customCheckBox input[type="checkbox"] { appearance: none; -webkit-appearance: none; -moz-appearance: none; width: 20px; height: 20px; border: 1px solid rgba(230, 234, 243, 0.3); border-radius: 50%; background: transparent; cursor: pointer; position: relative; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); outline: none; }
@@ -36,6 +47,11 @@ input { outline: none; border: none; }
 .customCheckBox input[type="checkbox"]:checked::before { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--input-color); font-size: 12px; font-weight: bold;}
 .customCheckBox .checkboxWrap label { color: var(--input-color); font-size: 1.4rem; cursor: pointer; user-select: none; transition: color 0.3s ease;}
 
+/* 기본 SELECT */
+.customSelectBox { }
+.customSelectBox select { width: 100%; height: var(--input-height); padding: 0 14px; background: var(--point-input-bg); color: var(--input-color); font-size: 1.4rem; border: none; border-radius: 10px; appearance: none; -webkit-appearance: none; -moz-appearance: none; cursor: pointer; }
+
+.loginBox { max-width: 420px; width: 100%; }
 .loginBox > form { width: 100%; display: flex; flex-direction: column; gap: 30px; }
 .loginBox > form > ul { width: 100%; display: flex; flex-direction: column; gap: 30px; }
 
@@ -49,4 +65,10 @@ input { outline: none; border: none; }
 .linkBox a:last-child::after { display: none; }
 .linkBox a:active { transform: translateY(0);}
 
-
+.joinWrap { height: calc(100vh - 100px); overflow: auto; } 
+.joinWrap form {} 
+.joinWrap form .sectionTitle { font-size: 2.4rem; line-height: 2.4rem; font-weight: 600; color: var(--input-color); margin-bottom: 30px; text-align: center; }
+.joinWrap form .sectionContent { padding: 30px 0; border-bottom: 1px solid var(--border-color); }
+.joinWrap form .sectionContent .subTitle { font-size: 1.8rem; line-height: 1.8rem; font-weight: 500; color: var(--input-color); margin-bottom: 20px; }
+.joinWrap form .sectionContent .flexColumn { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; width: 100%; }
+.joinWrap form .sectionContent .flexColumn li { width: 100%; }

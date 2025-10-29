@@ -49,7 +49,7 @@ const togglePasswordVisibility = () => {
         <div class="linkBox">
           <NuxtLink to="/find-id">아이디 찾기</NuxtLink>
           <NuxtLink to="/find-password">비밀번호 찾기</NuxtLink>
-          <NuxtLink to="/signup">회원가입</NuxtLink>
+          <NuxtLink to="/join">회원가입</NuxtLink>
         </div>
       </form>
     </div>
