@@ -138,6 +138,81 @@
           </li>
         </ul>
       </div>
+      <div class="sectionContent">
+        <div class="subTitle">
+          <p>질문&답변</p>
+        </div>
+        <ul class="flexColumn">
+          <li>
+            <label for="question">질문</label>
+            <select name="subLine" id="question">
+              <option value="" selected hidden>질문을 선택해주세요.</option>
+              <option value="top">처음 키운 반려동물의 이름은?</option>
+              <option value="top">다녔던 초등학교 이름은?</option>
+              <option value="top">가장 좋아하는 음식은?</option>
+              <option value="top">태어난 도시 이름은?</option>
+              <option value="top">어릴 적 친구의 이름은?</option>
+            </select>
+          </li>
+          <li>
+            <label for="question2">답변</label>
+            <input type="text" name="question2" id="question2" placeholder="답변을 입력해주세요">
+          </li>
+        </ul>
+      </div>
+      <div class="sectionContent">
+        <div class="subTitle">
+          <p>약관</p>
+        </div>
+        <ul class="flexColumn">
+          <!-- 전체 동의 -->
+          <li class="allAgreeBox checkboxWrap">
+            <input type="checkbox" name="allAgree" id="allAgree">
+            <label for="allAgree">전체 약관에 동의합니다</label>
+          </li>
+          
+          <!-- 필수 약관들 -->
+          <li class="termsItem">
+            <div class="checkboxWrap">
+              <input type="checkbox" name="serviceTerms" id="serviceTerms" required>
+              <label for="serviceTerms">[필수] 서비스 이용약관 동의</label>
+            </div>
+            <button type="button" class="termsViewBtn">보기</button>
+          </li>
+          
+          <li class="termsItem">
+            <div class="checkboxWrap">
+              <input type="checkbox" name="privacyTerms" id="privacyTerms" required>
+              <label for="privacyTerms">[필수] 개인정보 수집 및 이용 동의</label>
+            </div>
+            <button type="button" class="termsViewBtn">보기</button>
+          </li>
+          
+          <li class="termsItem">
+            <div class="checkboxWrap">
+              <input type="checkbox" name="ageTerms" id="ageTerms" required>
+              <label for="ageTerms">[필수] 만 14세 이상입니다</label>
+            </div>
+          </li>
+          
+          <!-- 선택 약관들 -->
+          <li class="termsItem">
+            <div class="checkboxWrap">
+              <input type="checkbox" name="marketingTerms" id="marketingTerms">
+              <label for="marketingTerms">[선택] 마케팅 정보 수신 동의</label>
+            </div>
+            <button type="button" class="termsViewBtn">보기</button>
+          </li>
+          
+          <li class="termsItem">
+            <div class="checkboxWrap">
+              <input type="checkbox" name="eventTerms" id="eventTerms">
+              <label for="eventTerms">[선택] 이벤트 및 혜택 알림 동의</label>
+            </div>
+            <button type="button" class="termsViewBtn">보기</button>
+          </li>
+        </ul>
+      </div>
       <button type="submit" class="fullBtn">회원가입</button>
     </form>
 

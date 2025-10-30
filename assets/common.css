@@ -65,6 +65,7 @@ input { outline: none; border: none; }
 .linkBox a:last-child::after { display: none; }
 .linkBox a:active { transform: translateY(0);}
 
+/* 회원가입 */
 .joinWrap { height: calc(100vh - 100px); overflow: auto; } 
 .joinWrap form {} 
 .joinWrap form .sectionTitle { font-size: 2.4rem; line-height: 2.4rem; font-weight: 600; color: var(--input-color); margin-bottom: 30px; text-align: center; }
@@ -72,3 +73,10 @@ input { outline: none; border: none; }
 .joinWrap form .sectionContent .subTitle { font-size: 1.8rem; line-height: 1.8rem; font-weight: 500; color: var(--input-color); margin-bottom: 20px; }
 .joinWrap form .sectionContent .flexColumn { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; width: 100%; }
 .joinWrap form .sectionContent .flexColumn li { width: 100%; }
+
+/* 약관 */
+.allAgreeBox.checkboxWrap { padding: 15px; background: var(--point-input-bg); border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 10px; }
+.allAgreeBox.checkboxWrap label { font-weight: 600;}
+.termsItem { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
+.termsViewBtn { padding: 5px 10px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: var(--input-color); border-radius: 5px; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease;}
+.termsViewBtn:hover { border-color: var(--border-color); color: var(--border-color);}
