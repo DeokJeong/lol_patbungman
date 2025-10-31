@@ -16,7 +16,7 @@ input { outline: none; border: none; }
     --bora-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --button-height: 48px;
     --input-height: 48px;
-    --border-color : #667eea;
+    --border-color : #e4e8f1;
 }
 .card { margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; background: var(--card-bg-color); border-radius: 20px; box-shadow: var(--card-shadow); position: absolute; z-index: 1; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(100% - 40px); backdrop-filter: var(--blur); border: 1.5px solid var(--card-border-color); gap: 20px; }
 .card form { width: 100%; }
@@ -42,10 +42,10 @@ input { outline: none; border: none; }
 
 /* 동그라미 CHECKBOX 디자인 */
 .customCheckBox .checkboxWrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-.customCheckBox input[type="checkbox"] { appearance: none; -webkit-appearance: none; -moz-appearance: none; width: 20px; height: 20px; border: 1px solid rgba(230, 234, 243, 0.3); border-radius: 50%; background: transparent; cursor: pointer; position: relative; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); outline: none; }
-.customCheckBox input[type="checkbox"]:checked { background: var(--bora-gradient); border: 1px solid var(--bora-gradient); }
-.customCheckBox input[type="checkbox"]:checked::before { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--input-color); font-size: 12px; font-weight: bold;}
-.customCheckBox .checkboxWrap label { color: var(--input-color); font-size: 1.4rem; cursor: pointer; user-select: none; transition: color 0.3s ease;}
+.customCheckBox .checkboxWrap input[type="checkbox"] { appearance: none; -webkit-appearance: none; -moz-appearance: none; width: 20px; height: 20px; border: 1px solid rgba(230, 234, 243, 0.3); border-radius: 50%; background: transparent; cursor: pointer; position: relative; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); outline: none; }
+.customCheckBox .checkboxWrap input[type="checkbox"]:checked { background: var(--bora-gradient); border: 1px solid var(--bora-gradient); }
+.customCheckBox .checkboxWrap input[type="checkbox"]:checked::before { content: '✓'; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: var(--input-color); font-size: 12px; font-weight: bold;}
+.customCheckBox .checkboxWrap label { margin: 0; color: var(--input-color); font-size: 1.4rem; cursor: pointer; user-select: none; transition: color 0.3s ease;}
 
 /* 기본 SELECT */
 .customSelectBox { }
@@ -66,13 +66,14 @@ input { outline: none; border: none; }
 .linkBox a:active { transform: translateY(0);}
 
 /* 회원가입 */
-.joinWrap { height: calc(100vh - 100px); overflow: auto; } 
+.joinWrap { height: calc(100vh - 100px); overflow: auto; max-width: 760px; margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; background: var(--card-bg-color); border-radius: 20px; box-shadow: var(--card-shadow); position: absolute; z-index: 1; left: 50%; top: 50%; transform: translate(-50%, -50%); width: calc(100% - 40px); backdrop-filter: var(--blur); border: 1.5px solid var(--card-border-color); gap: 20px; } 
 .joinWrap form {} 
 .joinWrap form .sectionTitle { font-size: 2.4rem; line-height: 2.4rem; font-weight: 600; color: var(--input-color); margin-bottom: 30px; text-align: center; }
 .joinWrap form .sectionContent { padding: 30px 0; border-bottom: 1px solid var(--border-color); }
 .joinWrap form .sectionContent .subTitle { font-size: 1.8rem; line-height: 1.8rem; font-weight: 500; color: var(--input-color); margin-bottom: 20px; }
 .joinWrap form .sectionContent .flexColumn { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; width: 100%; }
 .joinWrap form .sectionContent .flexColumn li { width: 100%; }
+.joinWrap form .sectionContent:last-of-type { border: none; }
 
 /* 약관 */
 .allAgreeBox.checkboxWrap { padding: 15px; background: var(--point-input-bg); border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 10px; }
@@ -80,3 +81,14 @@ input { outline: none; border: none; }
 .termsItem { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
 .termsViewBtn { padding: 5px 10px; background: transparent; border: 1px solid rgba(255, 255, 255, 0.2); color: var(--input-color); border-radius: 5px; font-size: 1.2rem; cursor: pointer; transition: all 0.3s ease;}
 .termsViewBtn:hover { border-color: var(--border-color); color: var(--border-color);}
+
+/* 웹킷 기반 브라우저용 커스텀 스크롤바 */
+.card::-webkit-scrollbar { width: 6px; }
+.card::-webkit-scrollbar-track { background: rgba(36, 40, 48, 0.3); border-radius: 8px; margin: 10px 0; }
+.card::-webkit-scrollbar-thumb {  background: var(--bora-gradient);  border-radius: 8px;  border: 1px solid rgba(255, 255, 255, 0.1); }
+
+/* 반응형 미디어쿼리 */
+@media screen and (max-width: 1024px) {
+.grid5 { grid-template-columns: repeat(1, 1fr); gap: 15px; }
+}
+
