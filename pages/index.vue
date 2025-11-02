@@ -45,10 +45,11 @@ const togglePasswordVisibility = () => {
           <input type="checkbox" name="saveId" id="saveId" autocomplete="off">
           <label for="saveId">아이디 저장</label>
         </div>
-        <button type="submit" class="fullBtn">로그인</button>
+        <!-- <button type="submit" class="fullBtn">로그인</button> -->
+        <NuxtLink to="/main" class="fullBtn">로그인</NuxtLink>
         <div class="linkBox">
-          <NuxtLink to="/find-id">아이디 찾기</NuxtLink>
-          <NuxtLink to="/find-password">비밀번호 찾기</NuxtLink>
+          <!-- <NuxtLink to="/find-id">아이디 찾기</NuxtLink> -->
+          <!-- <NuxtLink to="/find-password">비밀번호 찾기</NuxtLink> -->
           <NuxtLink to="/join">회원가입</NuxtLink>
         </div>
       </form>
