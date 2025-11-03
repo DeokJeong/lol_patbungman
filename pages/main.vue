@@ -1,5 +1,16 @@
 <script setup>
+// 팝업 상태 관리
 const showPopup = ref(false)
+const showResultPopup = ref(false)
+
+// 팝업 열기/닫기 함수
+const openResultPopup = () => {
+  showResultPopup.value = true
+}
+
+const closeResultPopup = () => {
+  showResultPopup.value = false
+}
 </script>
 <template>
   <div class="container">
@@ -32,8 +43,7 @@ const showPopup = ref(false)
             <div class="matchInfo between">
               <div>
                 <p class="matchResult win">승리</p>
-                <!-- <p class="matchResult loss">패배</p> -->
-                <button type="button">설정</button>
+                <button type="button" @click="openResultPopup()">설정</button>
               </div>
               <p class="matchDate">2024-06-15 20:30</p>
             </div>
@@ -61,11 +71,45 @@ const showPopup = ref(false)
             </div>
             <p class="matchBalance">팀 밸런스 점수: 92/100</p>
           </li>
+          
+          <li class="matchRecord">
+            <div class="matchInfo between">
+              <div>
+                <p class="matchResult pending">결과 미정</p>
+                <button type="button" @click="openResultPopup()">설정</button>
+              </div>
+              <p class="matchDate">2024-06-14 19:15</p>
+            </div>
+            <div class="teams">
+              <div class="team blueTeam">
+                <h3>블루 팀</h3>
+                <ul class="playerList">
+                  <li>플레이어11 (Platinum I)</li>
+                  <li>플레이어12 (Gold III)</li>
+                  <li>플레이어13 (Silver II)</li>
+                  <li>플레이어14 (Gold I)</li>
+                  <li>플레이어15 (Bronze III)</li>
+                </ul>
+              </div>
+              <div class="team redTeam">
+                <h3>레드 팀</h3>
+                <ul class="playerList">
+                  <li class="me">플레이어1 (Gold IV)</li>
+                  <li>플레이어16 (Silver I)</li>
+                  <li>플레이어17 (Platinum II)</li>
+                  <li>플레이어18 (Gold II)</li>
+                  <li>플레이어19 (Bronze I)</li>
+                </ul>
+              </div>
+            </div>
+            <p class="matchBalance">팀 밸런스 점수: 88/100</p>
+          </li>
         </ul>
       </div>
     </div>
   </div>
 
+  <!-- 매칭 시작 팝업 -->
   <div class="matchPopup" v-show="showPopup">
     <div class="popupOverlay" @click="showPopup = false"></div>
     <div class="popupContent card customInputBox customCheckBox customSelectBox">
@@ -74,6 +118,28 @@ const showPopup = ref(false)
         <p>내전에 참가할 플레이어들의 정보를 입력하고, 팀 매칭을 시작하세요.</p>
       </div>
       <button type="button" class="popupClose" @click="showPopup = false">×</button>
+    </div>
+  </div>
+
+  <!-- 경기 결과 설정 팝업 -->
+  <div class="resultPopup" v-show="showResultPopup">
+    <div class="popupOverlay" @click="closeResultPopup()"></div>
+    <div class="popupContent card">
+      <div class="popupTitle">
+        <h2>경기 결과 설정</h2>
+        <p>내가 속한 팀의 경기 결과를 선택하세요.</p>
+      </div>
+      <div class="resultButtons">
+        <button type="button" class="resultBtn winBtn" @click="closeResultPopup()">
+          <span class="resultIcon">🏆</span>
+          <span>승리</span>
+        </button>
+        <button type="button" class="resultBtn lossBtn" @click="closeResultPopup()">
+          <span class="resultIcon">💔</span>
+          <span>패배</span>
+        </button>
+      </div>
+      <button type="button" class="popupClose" @click="closeResultPopup()">×</button>
     </div>
   </div>
 </template>
