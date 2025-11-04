@@ -44,6 +44,7 @@ const closeResultPopup = () => {
               <div>
                 <p class="matchResult win">승리</p>
                 <button type="button" @click="openResultPopup()">설정</button>
+                <p class="matchBalance">팀 밸런스 점수: 92/100</p>
               </div>
               <p class="matchDate">2024-06-15 20:30</p>
             </div>
@@ -69,7 +70,6 @@ const closeResultPopup = () => {
                 </ul>
               </div>
             </div>
-            <p class="matchBalance">팀 밸런스 점수: 92/100</p>
           </li>
           
           <li class="matchRecord">
@@ -77,6 +77,7 @@ const closeResultPopup = () => {
               <div>
                 <p class="matchResult pending">결과 미정</p>
                 <button type="button" @click="openResultPopup()">설정</button>
+                 <p class="matchBalance">팀 밸런스 점수: 88/100</p>
               </div>
               <p class="matchDate">2024-06-14 19:15</p>
             </div>
@@ -102,7 +103,6 @@ const closeResultPopup = () => {
                 </ul>
               </div>
             </div>
-            <p class="matchBalance">팀 밸런스 점수: 88/100</p>
           </li>
         </ul>
       </div>
