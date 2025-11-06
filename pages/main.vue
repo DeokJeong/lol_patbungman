@@ -19,7 +19,7 @@ const closeResultPopup = () => {
         <h1>patbungman</h1>
         <div>
           <p>환영합니다! <span>플레이어이름</span>님</p>
-          <button type="button">로그아웃</button>
+          <button class="logout" type="button">로그아웃</button>
         </div>
       </div>
       <div class="card customInputBox matchSystemBox">

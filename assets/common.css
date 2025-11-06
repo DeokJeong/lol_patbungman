@@ -5,7 +5,7 @@ ul,li { list-style: none; }
 a { text-decoration: none; color: inherit; }
 select { outline: none; }
 input { outline: none; border: none; }
-
+body { background:#181818;}
 :root {
     --card-bg-color: rgba(28, 32, 40, 0.9);
     --card-border-color: rgba(255, 255, 255, 0.12);
@@ -23,6 +23,8 @@ input { outline: none; border: none; }
 .card form { width: 100%; }
 .grid { display: grid; }
 .grid5 { grid-template-columns: repeat(5, 1fr); gap: 10px; }
+
+.container { margin: 70px auto; width: 100%; max-width: 1200px; }
 /* 라벨이 움직이는 INPUT */
 .pointInputDesign .pointInputField { position: relative; width: 100%; }
 .pointInputDesign .pointInputField label { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: auto; height: auto; line-height: 1; color: var(--input-color); font-size: 1.4rem; pointer-events: none; background: transparent; transition: all 0.22s cubic-bezier(.7,0,.3,1); z-index: 4; text-align: left; padding: 0 2px; border-radius: 3px; box-shadow: none; }
@@ -90,37 +92,37 @@ input { outline: none; border: none; }
 
 /* 메인화면 */
 .mainWrap { display: flex; flex-direction: column; gap: 50px; }
-.mainWrap .nameCard { margin-left: 20px; width: 100%; max-width: 600px; background: var(--point-input-bg); border-radius: 15px; padding: 20px; box-sizing: border-box; }
+.mainWrap .logout { background: var(--bora-gradient); color: white; padding: 8px 10px; border-radius: 5px; font-size: 1.4rem; line-height: 1.4rem; border: none;}
+.mainWrap .nameCard { margin-left: 20px; width: calc(100% - 40px); max-width: 600px; background: var(--point-input-bg); border-radius: 15px; padding: 20px; box-sizing: border-box; box-shadow: var(--card-shadow); }
 .mainWrap .nameCard div { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
 .mainWrap .nameCard h1 { font-size: 2rem; color: var(--input-color); font-weight: 700; }
 .mainWrap .nameCard p { font-size: 1.4rem; color: var(--input-color); }
-.mainWrap .nameCard p span { font-weight: 600; }  
+.mainWrap .nameCard p span { margin: 0 5px; font-weight: 600; color: var(--bora-gradient); font-size: 1.6rem; line-height: 1.6rem; }  
 
-.mainWrap .card .title { text-align: center;}
-.mainWrap .card .title h2 { font-size: 2.4rem; color: var(--input-color); font-weight: 700; margin-bottom: 10px; }
-.mainWrap .card .title p { font-size: 1.4rem; color: var(--input-color); line-height: 1.6rem; } 
 
 .mainWrap .matchSystemBox { }
-.mainWrap .matchSystemBox .title { margin-bottom: 30px; } 
+.mainWrap .matchSystemBox .title { margin-bottom: 20x; text-align: center;}
+.mainWrap .matchSystemBox .title h2 { font-size: 2.4rem; color: var(--input-color); font-weight: 700; margin-bottom: 10px; }
+.mainWrap .matchSystemBox .title p { font-size: 1.4rem; color: var(--input-color); line-height: 2rem; } 
 
 .mainWrap .matchRecordBox {}
 .mainWrap .matchRecordBox .title { display: flex; justify-content: space-between; align-items: center; width: 100%; }
 .mainWrap .matchRecordBox .title h2 { font-size: 2.4rem; color: var(--input-color); font-weight: 700; }
 .mainWrap .matchRecordBox .title a { font-size: 1.4rem; color: var(--input-color); border-bottom: 1px solid var(--input-color); }
-.mainWrap .matchRecordBox > ul { width: 100%; display: flex; flex-direction: column; gap: 30px; }
+.mainWrap .matchRecordBox > ul { width: 100%; display: flex; flex-direction: column; gap: 20px; }
 .mainWrap .matchRecordBox > ul li { width: 100%; }
 .mainWrap .matchRecordBox ul { width: 100%; }
-.mainWrap .matchRecordBox .matchRecord { width: 100%; display: flex; flex-direction: column; gap: 30px; }
+.mainWrap .matchRecordBox .matchRecord { width: 100%; display: flex; flex-direction: column; gap: 30px; border: 1px solid var(--bora-gradient); padding: 25px 20px; border-radius: 10px; }
 .mainWrap .matchRecordBox .matchRecord .matchInfo { }
 .mainWrap .matchRecordBox .matchRecord .matchInfo.between { display: flex; justify-content: space-between; align-items: center; }
 .mainWrap .matchRecordBox .matchRecord .matchInfo > div { display: flex; align-items: center; justify-content: flex-start; gap: 10px; }
 .mainWrap .matchRecordBox .matchRecord .matchInfo .matchDate { font-size: 1.6rem; color: var(--input-color); }
-.mainWrap .matchRecordBox .matchRecord .matchInfo .matchResult { padding: 5px 10px; font-size: 1.6rem; color: var(--input-color); font-weight: 600; background-color: #667eea; }
+.mainWrap .matchRecordBox .matchRecord .matchInfo .matchResult { padding: 5px 10px; font-size: 1.6rem; color: var(--input-color); font-weight: 600; background-color: var(--bora-gradient); border-radius: 5px;}
 .mainWrap .matchRecordBox .matchRecord .matchInfo button { background: transparent; border: 1px solid rgba(230, 234, 243, 0.3); color: var(--input-color); font-size: 1.6rem; padding: 5px 10px; border-radius: 5px; cursor: pointer; transition: all 0.3s ease;}
-.mainWrap .matchRecordBox .matchRecord .teams { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.mainWrap .matchRecordBox .matchRecord .teams { display: flex; flex-direction: column; align-items: center; gap: 25px; }
 .mainWrap .matchRecordBox .matchRecord .teams .team { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .mainWrap .matchRecordBox .matchRecord .teams .team h3 { font-size: 2rem; line-height: 2rem; color: var(--input-color); font-weight: 700; }
-.mainWrap .matchRecordBox .matchRecord .teams .team.blueTeam h3 { color: #667eea; }
+.mainWrap .matchRecordBox .matchRecord .teams .team.blueTeam h3 { color: var(--bora-gradient); }
 .mainWrap .matchRecordBox .matchRecord .teams .team.redTeam h3 { color: #d11b52; }
 .mainWrap .matchRecordBox .matchRecord .teams .team .playerList { display: flex; gap: 15px; }
 .mainWrap .matchRecordBox .matchRecord .teams .team .playerList li { padding: 20px 0; width: 25%; font-size: 1.4rem; color: var(--input-color); text-align: center; background-color: var(--point-input-bg); border-radius: 5px; }
@@ -147,7 +149,24 @@ input { outline: none; border: none; }
 .matchBalance { margin-top: 10px; margin-bottom: 10px; font-size: 1.4rem; color: var(--input-color); font-weight: 600; text-align: center; }
 /* 반응형 미디어쿼리 */
 @media screen and (max-width: 1024px) {
+.container { margin: 40px auto ; }
 .grid5 { grid-template-columns: repeat(1, 1fr); gap: 15px; }
+.card { padding: 30px 15px; }
+.matchBalance { font-size: 1.2rem; line-height: 1.2rem; }
+
+.mainWrap { gap: 25px; }
+
+.mainWrap .matchSystemBox .title h2 { margin-bottom: 15px; font-size: 2rem; line-height: 2rem; }
+.mainWrap .matchSystemBox .title p { font-size: 1.2rem; line-height: 1.8rem; }
+
+.mainWrap .matchSystemBox .title { margin-bottom: 0; }
+
+.mainWrap .matchRecordBox .matchRecord { padding: 20px 15px; gap: 15px; }
+.mainWrap .matchRecordBox .matchRecord .teams { flex-direction: row; }
+.mainWrap .matchRecordBox .matchRecord .teams .team .playerList { flex-direction: column; }
+.mainWrap .matchRecordBox .matchRecord .teams .team .playerList li { width: 100%; font-size: 1.2rem; line-height: 1.2rem; }
+.mainWrap .matchRecordBox .matchRecord .matchInfo.between { flex-direction: column-reverse; gap: 10px; align-items: flex-start; }
+.mainWrap .matchRecordBox .matchRecord .matchInfo .matchDate { font-size: 1.2rem; line-height: 1.2rem; }
 }
 
 
