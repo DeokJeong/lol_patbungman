@@ -291,7 +291,7 @@ const startMatching = async () => {
       </div>
       <div class="card customInputBox matchSystemBox">
         <div class="title">
-          <h2>내전 자동 팀 매칭 시스템 입니다</h2>
+          <h2>내전 자동 팀 매칭 시스템</h2>
           <p>10명 단위 5vs5 균형잡힌 팀을 자동으로 생성합니다.<br>티어 점수와 라인 가중치 기반으로 최적의 팀 밸런스를 제공하며, 후보자 관리와 실시간 교체가 가능합니다.</p>
         </div>
         <div class="matchBtnBox">
