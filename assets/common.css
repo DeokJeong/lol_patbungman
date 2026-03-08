@@ -1,11 +1,12 @@
 /* CSS 정리 */
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-size: 62.5%; }
+html { font-size: 62.5%; height: 100%; }
 ul,li { list-style: none; }
 a { text-decoration: none; color: inherit; }
 select { outline: none; }
 input { outline: none; border: none; }
-body { background:#181818;}
+body { background:#181818; min-height: 100%; display: flex; flex-direction: column; }
+#__nuxt { flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 :root {
     --card-bg-color: rgba(28, 32, 40, 0.9);
     --card-border-color: rgba(255, 255, 255, 0.12);
@@ -14,10 +15,14 @@ body { background:#181818;}
     --blur: blur(18px) saturate(1.2);
     --input-color: #e6eaf3;
     /* --bora-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
-    --bora-gradient: #667eea;
+    --bora-gradient: #8b7548;
     --button-height: 48px;
     --input-height: 48px;
     --border-color : #e4e8f1;
+    --lol-gold: #c8aa6e;
+    --lol-gold-dark: #8b7548;
+    --lol-dark-bg: rgba(9, 20, 40, 0.8);
+    --lol-item-bg: rgba(30, 35, 47, 0.6);
 }
 .card { margin: 0 auto; padding: 40px 20px; display: flex; flex-direction: column; align-items: center; background: var(--card-bg-color); border-radius: 20px; box-shadow: var(--card-shadow); width: calc(100% - 40px); backdrop-filter: var(--blur); border: 1.5px solid var(--card-border-color); gap: 20px; }
 .card form { width: 100%; }
@@ -41,7 +46,6 @@ body { background:#181818;}
 .customInputBox input[type=text], 
 .customInputBox input[type=password],
 .customInputBox input[type=email] { margin: 0; padding: 0 14px; display: block; width: 100%; height: var(--input-height); background: var(--point-input-bg); border: none; color: var(--input-color); font-size: 1.4rem; border-radius: 10px; outline: none; font-weight: 600; }
-.customInputBox input:focus { border: 2px solid var(--border-color); }
 
 /* 동그라미 CHECKBOX 디자인 */
 .customCheckBox .checkboxWrap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
@@ -60,6 +64,7 @@ body { background:#181818;}
 
 /* 로그인 버튼 스타일 */
 .fullBtn { width: 100%; height: var(--button-height); background: var(--bora-gradient); border: none; border-radius: 10px; color: white; font-size: 1.6rem; font-weight: 600; cursor: pointer; position: relative; overflow: hidden;  }
+.fullBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* 링크 박스 스타일 */
 .linkBox { display: flex; justify-content: center; align-items: center; gap: 10px; }
@@ -93,17 +98,22 @@ body { background:#181818;}
 /* 메인화면 */
 .mainWrap { display: flex; flex-direction: column; gap: 50px; }
 .mainWrap .logout { background: var(--bora-gradient); color: white; padding: 8px 10px; border-radius: 5px; font-size: 1.4rem; line-height: 1.4rem; border: none;}
+.mainWrap .friends { background: transparent; color: var(--lol-gold); padding: 8px 16px; border-radius: 5px; font-size: 1.4rem; line-height: 1.4rem; border: 1px solid var(--lol-gold); cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
+.mainWrap .friends:hover { background: rgba(200, 170, 110, 0.15); border-color: var(--lol-gold); transform: translateY(-1px); }
 .mainWrap .nameCard { margin-left: 20px; width: calc(100% - 40px); max-width: 600px; background: var(--point-input-bg); border-radius: 15px; padding: 20px; box-sizing: border-box; box-shadow: var(--card-shadow); }
-.mainWrap .nameCard div { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+.mainWrap .nameCard div { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; gap: 10px; }
 .mainWrap .nameCard h1 { font-size: 2rem; color: var(--input-color); font-weight: 700; }
 .mainWrap .nameCard p { font-size: 1.4rem; color: var(--input-color); }
-.mainWrap .nameCard p span { margin: 0 5px; font-weight: 600; color: var(--bora-gradient); font-size: 1.6rem; line-height: 1.6rem; }  
+.mainWrap .nameCard p span { margin: 0 5px; font-weight: 600; color: var(--bora-gradient); font-size: 1.6rem; line-height: 1.6rem; }
+.mainWrap .nameCard .backBtn { background: transparent; color: var(--lol-gold); padding: 8px 16px; border-radius: 5px; font-size: 1.4rem; line-height: 1.4rem; border: 1px solid var(--lol-gold); cursor: pointer; transition: all 0.3s ease; font-weight: 600; text-decoration: none; display: inline-block; }
+.mainWrap .nameCard .backBtn:hover { background: rgba(200, 170, 110, 0.15); }  
 
 
 .mainWrap .matchSystemBox { }
 .mainWrap .matchSystemBox .title { margin-bottom: 20x; text-align: center;}
 .mainWrap .matchSystemBox .title h2 { font-size: 2.4rem; color: var(--input-color); font-weight: 700; margin-bottom: 10px; }
 .mainWrap .matchSystemBox .title p { font-size: 1.4rem; color: var(--input-color); line-height: 2rem; } 
+.mainWrap .matchSystemBox .matchBtnBox { width: 100%; }
 
 .mainWrap .matchRecordBox {}
 .mainWrap .matchRecordBox .title { display: flex; justify-content: space-between; align-items: center; width: 100%; }
@@ -112,47 +122,52 @@ body { background:#181818;}
 .mainWrap .matchRecordBox > ul { width: 100%; display: flex; flex-direction: column; gap: 20px; }
 .mainWrap .matchRecordBox > ul li { width: 100%; }
 .mainWrap .matchRecordBox ul { width: 100%; }
-.mainWrap .matchRecordBox .matchRecord { width: 100%; display: flex; flex-direction: column; gap: 30px; border: 1px solid var(--bora-gradient); padding: 25px 20px; border-radius: 10px; }
+.mainWrap .matchRecordBox .matchRecord { width: 100%; display: flex; flex-direction: column; gap: 30px; border: 1px solid var(--lol-gold); padding: 25px 20px; border-radius: 10px; }
 .mainWrap .matchRecordBox .matchRecord .matchInfo { }
 .mainWrap .matchRecordBox .matchRecord .matchInfo.between { display: flex; justify-content: space-between; align-items: center; }
 .mainWrap .matchRecordBox .matchRecord .matchInfo > div { display: flex; align-items: center; justify-content: flex-start; gap: 10px; }
 .mainWrap .matchRecordBox .matchRecord .matchInfo .matchDate { font-size: 1.6rem; color: var(--input-color); }
-.mainWrap .matchRecordBox .matchRecord .matchInfo .matchResult { padding: 5px 10px; font-size: 1.6rem; color: var(--input-color); font-weight: 600; background-color: var(--bora-gradient); border-radius: 5px;}
+.mainWrap .matchRecordBox .matchRecord .matchInfo .matchResult { padding: 5px 10px; font-size: 1.6rem; color: #fff; font-weight: 600; background-color: var(--lol-gold-dark); border-radius: 5px;}
+.mainWrap .matchRecordBox .matchRecord .matchInfo .matchBalance { font-size: 1.4rem; color: var(--input-color); font-weight: 600; }
 .mainWrap .matchRecordBox .matchRecord .matchInfo button { background: transparent; border: 1px solid rgba(230, 234, 243, 0.3); color: var(--input-color); font-size: 1.6rem; padding: 5px 10px; border-radius: 5px; cursor: pointer; transition: all 0.3s ease;}
 .mainWrap .matchRecordBox .matchRecord .teams { display: flex; flex-direction: column; align-items: center; gap: 25px; }
 .mainWrap .matchRecordBox .matchRecord .teams .team { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .mainWrap .matchRecordBox .matchRecord .teams .team h3 { font-size: 2rem; line-height: 2rem; color: var(--input-color); font-weight: 700; }
-.mainWrap .matchRecordBox .matchRecord .teams .team.blueTeam h3 { color: var(--bora-gradient); }
+.mainWrap .matchRecordBox .matchRecord .teams .team.blueTeam h3 { color: #5b9bd5; }
 .mainWrap .matchRecordBox .matchRecord .teams .team.redTeam h3 { color: #d11b52; }
 .mainWrap .matchRecordBox .matchRecord .teams .team .playerList { display: flex; gap: 15px; }
-.mainWrap .matchRecordBox .matchRecord .teams .team .playerList li { padding: 20px 0; width: 25%; font-size: 1.4rem; color: var(--input-color); text-align: center; background-color: var(--point-input-bg); border-radius: 5px; }
+.mainWrap .matchRecordBox .matchRecord .teams .team .playerList li { padding: 15px 10px; width: 25%; font-size: 1.4rem; color: var(--input-color); text-align: center; background-color: var(--point-input-bg); border-radius: 5px; display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.mainWrap .matchRecordBox .matchRecord .teams .team .playerList li .playerName { font-weight: 600; font-size: 1.5rem; }
+.mainWrap .matchRecordBox .matchRecord .teams .team .playerList li .playerPositions { display: flex; flex-direction: column; gap: 3px; font-size: 1.15rem; }
+.mainWrap .matchRecordBox .matchRecord .teams .team .playerList li .playerPositions .primary { color: var(--lol-gold); font-weight: 500; }
+.mainWrap .matchRecordBox .matchRecord .teams .team .playerList li .playerPositions .secondary { color: rgba(200, 170, 110, 0.6); font-weight: 500; }
 .mainWrap .matchRecordBox .matchRecord .teams .team .teamName { font-size: 1.4rem; color: var(--input-color); font-weight: 600; }
 .mainWrap .matchRecordBox .matchRecord .matchScore { font-size: 1.6rem; color: var(--input-color); font-weight: 700; }
 
-/* 팝업 */
+/* 팝업 공통 */
 .matchPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; align-items: center; justify-content: center;}
-.popupOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);}
-.popupContent { position: relative; z-index: 1001; max-width: 600px; max-height: 80vh; overflow-y: auto;  color: var(--input-color); }
-.popupContent .popupClose { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 2.4rem; color: var(--input-color); cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s ease;}
-.matchBtnBox { display: flex; gap: 10px; width: 100%;}
-.matchBtnBox .fullBtn { flex: 1; }
-
-/* 팝업 공통 스타일 */
-.resultPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; align-items: center; justify-content: center;}
-.resultPopup .popupTitle h2 { color: var(--input-color); margin-bottom: 10px; font-size: 2rem; line-height: 2rem; text-align: center; }
-.resultPopup .popupTitle p { color: var(--input-color); font-size: 1.2rem; text-align: center; }
+.matchPopup .popupOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px);}
+.matchPopup .popupContent { position: relative; z-index: 1001; max-width: 600px; max-height: 80vh; color: var(--input-color); display: flex; flex-direction: column; overflow: hidden; }
+.matchPopup .popupContent .popupCont { width: 100%; overflow-y: auto; flex: 1; padding-right: 10px; }
+.matchPopup .popupContent .popupClose { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 2.4rem; color: var(--input-color); cursor: pointer; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: all 0.3s ease; z-index: 10;}
+.matchPopup .popupContent .popupTitle { width: 100%; flex-shrink: 0; }
+.matchPopup .popupContent .popupTitle h2 { color: var(--input-color); margin-bottom: 10px; font-size: 2rem; line-height: 2rem; text-align: center; }
+.matchPopup .popupContent .popupTitle p { color: var(--input-color); font-size: 1.2rem; text-align: center; }
+.matchPopup .matchBtnBox { display: flex; gap: 10px; width: 100%;}
+.matchPopup .matchBtnBox .fullBtn { flex: 1; }
 
 /* 경기 결과 버튼 */
-.resultButtons { display: flex; gap: 20px; justify-content: center;}
-.resultBtn { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 30px 40px; border: 2px solid transparent; border-radius: 15px; background: rgba(255, 255, 255, 0.05); color: var(--input-color); font-size: 1.6rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; min-width: 120px;}
-.resultIcon { font-size: 3rem;}
-.matchBalance { margin-top: 10px; margin-bottom: 10px; font-size: 1.4rem; color: var(--input-color); font-weight: 600; text-align: center; }
+.matchPopup .resultButtons { display: flex; gap: 20px; justify-content: center;}
+.matchPopup .resultBtn { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 30px 40px; border: 2px solid transparent; border-radius: 15px; background: rgba(255, 255, 255, 0.05); color: var(--input-color); font-size: 1.6rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; min-width: 120px;}
+.matchPopup .resultIcon { font-size: 3rem;}
+.matchPopup .matchBalance { margin-top: 10px; margin-bottom: 10px; font-size: 1.4rem; color: var(--input-color); font-weight: 600; text-align: center; }
+
 /* 반응형 미디어쿼리 */
 @media screen and (max-width: 1024px) {
 .container { margin: 40px auto ; }
 .grid5 { grid-template-columns: repeat(1, 1fr); gap: 15px; }
 .card { padding: 30px 15px; }
-.matchBalance { font-size: 1.2rem; line-height: 1.2rem; }
+.matchPopup .matchBalance { font-size: 1.2rem; line-height: 1.2rem; }
 
 .mainWrap { gap: 25px; }
 
@@ -168,5 +183,252 @@ body { background:#181818;}
 .mainWrap .matchRecordBox .matchRecord .matchInfo.between { flex-direction: column-reverse; gap: 10px; align-items: flex-start; }
 .mainWrap .matchRecordBox .matchRecord .matchInfo .matchDate { font-size: 1.2rem; line-height: 1.2rem; }
 }
+
+/* mtTier 롤 클라이언트 스타일 */
+.matchPopup .popupContent .popupCont .mtTier { padding: 20px; border-radius: 8px; border: 1px solid rgba(200, 170, 110, 0.3); }
+.matchPopup .popupContent .popupCont .mtTier .tierHeader { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
+.matchPopup .popupContent .popupCont .mtTier .levelBox { background: rgba(200, 170, 110, 0.2); border: 1px solid rgba(200, 170, 110, 0.5); border-radius: 4px; padding: 8px 16px; color: var(--lol-gold); font-weight: bold; font-size: 1.6rem; }
+.matchPopup .popupContent .popupCont .mtTier .highestTier { color: var(--lol-gold); font-size: 1.4rem; font-weight: 500; }
+.matchPopup .popupContent .popupCont .mtTier .positionGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 20px; }
+.matchPopup .popupContent .popupCont .mtTier .positionItem { display: flex; flex-direction: column; align-items: center; padding: 15px 10px; background: var(--lol-item-bg); border: 1px solid rgba(200, 170, 110, 0.2); border-radius: 6px; cursor: pointer; transition: all 0.3s ease; }
+.matchPopup .popupContent .popupCont .mtTier .positionIcon { font-size: 2rem; margin-bottom: 8px; }
+.matchPopup .popupContent .popupCont .mtTier .positionName { color: var(--lol-gold); font-size: 1.2rem; font-weight: 500; margin-bottom: 4px; }
+.matchPopup .popupContent .popupCont .mtTier .positionTier { color: rgba(200, 170, 110, 0.7); font-size: 1.1rem; }
+.matchPopup .popupContent .popupCont .mtTier .selectedPositions { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.matchPopup .popupContent .popupCont .mtTier .positionCard { display: flex; align-items: center; gap: 12px; padding: 15px; background: rgba(30, 35, 47, 0.8); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 6px; }
+.matchPopup .popupContent .popupCont .mtTier .positionCard.secondary { border-color: rgba(200, 170, 110, 0.5); }
+.matchPopup .popupContent .popupCont .mtTier .cardIcon { font-size: 2.4rem; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: rgba(200, 170, 110, 0.1); border-radius: 50%; }
+.matchPopup .popupContent .popupCont .mtTier .cardInfo { flex: 1; }
+.matchPopup .popupContent .popupCont .mtTier .cardTitle { color: var(--lol-gold); font-size: 1.4rem; font-weight: 600; margin-bottom: 2px; }
+.matchPopup .popupContent .popupCont .mtTier .cardTier { color: rgba(200, 170, 110, 0.7); font-size: 1.2rem; }
+
+
+/* 참가자 현황 박스 */
+.matchPopup .popupContent .popupCont .participantStatus { margin-bottom: 20px; padding: 20px; border-radius: 8px; border: 1px solid rgba(200, 170, 110, 0.3); margin-top: 20px; }
+.matchPopup .popupContent .popupCont .participantStatus > div:first-child { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px; }
+.matchPopup .popupContent .popupCont .participantStatus > div:first-child > div { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 15px 10px; background: var(--lol-item-bg); border: 1px solid rgba(200, 170, 110, 0.2); border-radius: 6px; }
+.matchPopup .popupContent .popupCont .participantStatus strong { color: rgba(200, 170, 110, 0.7); font-size: 1.2rem; font-weight: 500; }
+.matchPopup .popupContent .popupCont .participantStatus span { color: var(--lol-gold); font-size: 2rem; font-weight: bold; }
+.matchPopup .popupContent .popupCont .participantStatus > div:last-child { text-align: center; padding: 10px; background: rgba(200, 170, 110, 0.1); border-radius: 4px; color: rgba(200, 170, 110, 0.8); font-size: 1.2rem; border: 1px solid rgba(200, 170, 110, 0.2); }
+
+/* 친구 리스트 */
+.addFriendPopup .popupContent .popupCont .friendList,
+.matchPopup .popupContent .popupCont .friendList { display: flex; flex-direction: column; gap: 6px; max-height: 450px; overflow-y: auto; padding: 8px; background: rgba(0, 0, 0, 0.2); border-radius: 0 0 8px 8px; border: 1px solid rgba(200, 170, 110, 0.2); border-top: none; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem,
+.matchPopup .popupContent .popupCont .friendList .friendItem { padding: 12px 16px; background: var(--lol-item-bg); border: 1px solid rgba(200, 170, 110, 0.15); border-radius: 6px; cursor: pointer; transition: all 0.3s ease; position: relative; }
+.matchPopup .popupContent .popupCont .friendList .friendItem:hover { border-color: var(--lol-gold); background: rgba(200, 170, 110, 0.08); transform: translateX(4px); box-shadow: 0 2px 12px rgba(200, 170, 110, 0.15); }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem > div,
+.matchPopup .popupContent .popupCont .friendList .friendItem > div { display: flex; align-items: center; gap: 15px; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendAvatar,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendAvatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, rgba(200, 170, 110, 0.3), rgba(200, 170, 110, 0.1)); display: flex; align-items: center; justify-content: center; font-size: 2rem; color: var(--lol-gold); border: 2px solid rgba(200, 170, 110, 0.3); flex-shrink: 0; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendInfo,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendInfo { flex: 1; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendName,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendName { color: var(--input-color); font-size: 1.5rem; font-weight: 600; line-height: 1.4; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendTierInfo,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendTierInfo { display: flex; gap: 8px; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendTierInfo .tierItem,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendTierInfo .tierItem { font-size: 1.15rem; line-height: 1.3; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendTierInfo .tierItem.primary,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendTierInfo .tierItem.primary { color: var(--lol-gold); font-weight: 500; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendTierInfo .tierItem.secondary,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendInfo .friendTierInfo .tierItem.secondary { color: rgba(200, 170, 110, 0.6); font-weight: 500; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendDeleteBtn,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendDeleteBtn { width: 32px; height: 32px; border-radius: 4px; background: rgba(239, 68, 68, 0.2); border: 1px solid rgba(239, 68, 68, 0.3); color: #ef4444; font-size: 1.6rem; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem .friendDeleteBtn:hover,
+.matchPopup .popupContent .popupCont .friendList .friendItem .friendDeleteBtn:hover { background: rgba(239, 68, 68, 0.3); border-color: #ef4444; transform: scale(1.05); }
+
+/* 팝업 내용 스크롤바 */
+.matchPopup .popupContent .popupCont::-webkit-scrollbar,
+.addFriendPopup .popupContent .popupCont::-webkit-scrollbar { width: 6px; }
+.matchPopup .popupContent .popupCont::-webkit-scrollbar-track,
+.addFriendPopup .popupContent .popupCont::-webkit-scrollbar-track { background: rgba(30, 35, 47, 0.3); border-radius: 8px; }
+.matchPopup .popupContent .popupCont::-webkit-scrollbar-thumb,
+.addFriendPopup .popupContent .popupCont::-webkit-scrollbar-thumb { background: var(--lol-gold); border-radius: 8px; }
+
+/* 친구 리스트 스크롤바 */
+.addFriendPopup .popupContent .popupCont .friendList::-webkit-scrollbar,
+.matchPopup .popupContent .popupCont .friendList::-webkit-scrollbar { width: 6px; }
+.addFriendPopup .popupContent .popupCont .friendList::-webkit-scrollbar-track,
+.matchPopup .popupContent .popupCont .friendList::-webkit-scrollbar-track { background: rgba(30, 35, 47, 0.3); border-radius: 8px; }
+.addFriendPopup .popupContent .popupCont .friendList::-webkit-scrollbar-thumb,
+.matchPopup .popupContent .popupCont .friendList::-webkit-scrollbar-thumb { background: var(--lol-gold); border-radius: 8px; }
+
+/* 친구 추가 팝업 */
+.addFriendPopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1000; display: flex; align-items: center; justify-content: center; }
+.addFriendPopup .popupOverlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(5px); }
+.addFriendPopup .popupContent { position: relative; z-index: 1001; max-width: 500px; width: calc(100% - 40px); padding: 20px; background: var(--card-bg-color); border-radius: 20px; box-shadow: var(--card-shadow); backdrop-filter: var(--blur); border: 1.5px solid var(--card-border-color); color: var(--input-color); }
+.addFriendPopup .popupContent .popupTitle { position: relative; width: 100%; margin-bottom: 20px; }
+.addFriendPopup .popupContent .popupTitle h2 { color: var(--lol-gold); font-size: 2rem; line-height: 2rem; text-align: center; font-weight: 600; }
+.addFriendPopup .popupContent .popupClose { position: absolute; top: 0; right: 0; background: var(--lol-item-bg); font-size: 2rem; color: var(--lol-gold); cursor: pointer; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; box-shadow: none; border: none;}
+.addFriendPopup .popupContent .popupCont { width: 100%; }
+.addFriendPopup .popupContent .popupCont .addFriendForm { display: flex; flex-direction: column; gap: 15px; }
+.addFriendPopup .popupContent .popupCont .addFriendForm label { margin-bottom: 0; color: var(--lol-gold); font-size: 1.4rem; font-weight: 600; }
+.addFriendPopup .popupContent .popupCont .addFriendForm .inputWithBtn { display: flex; gap: 10px; align-items: center; }
+.addFriendPopup .popupContent .popupCont .addFriendForm .inputWithBtn input { flex: 1; padding: 0 14px; height: var(--input-height); background: var(--point-input-bg); border: 1px solid rgba(200, 170, 110, 0.3); color: var(--input-color); font-size: 1.4rem; border-radius: 10px; outline: none; font-weight: 600; transition: all 0.3s ease; }
+.addFriendPopup .popupContent .popupCont .addFriendForm .inputWithBtn input:focus { border-color: var(--lol-gold); box-shadow: 0 0 8px rgba(200, 170, 110, 0.3); }
+.addFriendPopup .popupContent .popupCont .addFriendForm .inputWithBtn button { flex-shrink: 0; width: 100px; height: var(--input-height); }
+.addFriendPopup .popupContent .popupCont .addFriendForm .friendErrorMsg { color: #ef4444; font-size: 1.3rem; font-weight: 600; }
+
+/* 친구 목록 팝업 - 넓은 버전 */
+.addFriendPopup .popupContent.friendListWide { max-width: 700px; max-height: 80vh; }
+
+/* 친구 섹션 */
+.addFriendPopup .popupContent .popupCont .friendSection,
+.matchPopup .popupContent .popupCont .friendSection { margin-top: 0; }
+.addFriendPopup .popupContent .popupCont .friendSection .friendSearchBox,
+.matchPopup .popupContent .popupCont .friendSection .friendSearchBox { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
+.addFriendPopup .popupContent .popupCont .friendSection .friendSearchBox .friendSearchInput,
+.matchPopup .popupContent .popupCont .friendSection .friendSearchBox .friendSearchInput { flex: 1; padding: 0 16px; height: 44px; background: var(--point-input-bg); border: 1px solid rgba(200, 170, 110, 0.3); color: var(--input-color); font-size: 1.4rem; border-radius: 8px; outline: none; font-weight: 600; transition: all 0.3s ease; }
+.addFriendPopup .popupContent .popupCont .friendSection .friendSearchBox .friendSearchInput:focus,
+.matchPopup .popupContent .popupCont .friendSection .friendSearchBox .friendSearchInput:focus { border-color: var(--lol-gold); box-shadow: 0 0 8px rgba(200, 170, 110, 0.3); }
+.addFriendPopup .popupContent .popupCont .friendSection .friendSearchBox .addFriendBtn,
+.matchPopup .popupContent .popupCont .friendSection .friendSearchBox .addFriendBtn { padding: 0 20px; height: 44px; background: var(--lol-item-bg); border: 1px solid rgba(200, 170, 110, 0.3); color: var(--lol-gold); border-radius: 8px; cursor: pointer; font-size: 1.3rem; font-weight: 600; transition: all 0.3s ease; white-space: nowrap; }
+.addFriendPopup .popupContent .popupCont .friendSection .friendSearchBox .addFriendBtn:hover,
+.matchPopup .popupContent .popupCont .friendSection .friendSearchBox .addFriendBtn:hover { border-color: var(--lol-gold); background: rgba(200, 170, 110, 0.15); }
+.addFriendPopup .popupContent .popupCont .friendSection .friendListHeader,
+.matchPopup .popupContent .popupCont .friendSection .friendListHeader { padding: 12px 16px; background: rgba(0, 0, 0, 0.3); border-radius: 8px 8px 0 0; border: 1px solid rgba(200, 170, 110, 0.2); border-bottom: none; }
+.addFriendPopup .popupContent .popupCont .friendSection .friendListHeader span,
+.matchPopup .popupContent .popupCont .friendSection .friendListHeader span { color: var(--lol-gold); font-size: 1.4rem; font-weight: 600; }
+.addFriendPopup .popupContent .popupCont .friendSection > div:first-child,
+.matchPopup .popupContent .popupCont .friendSection > div:first-child { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.addFriendPopup .popupContent .popupCont .friendSection h3,
+.matchPopup .popupContent .popupCont .friendSection h3 { color: var(--lol-gold); font-size: 1.6rem; font-weight: 600; }
+.addFriendPopup .popupContent .popupCont .friendSection .buttonGroup,
+.matchPopup .popupContent .popupCont .friendSection .buttonGroup { display: flex; gap: 10px; }
+.addFriendPopup .popupContent .popupCont .friendSection > div:first-child button,
+.matchPopup .popupContent .popupCont .friendSection > div:first-child button { padding: 8px 16px; background: var(--lol-item-bg); border: 1px solid rgba(200, 170, 110, 0.3); color: var(--lol-gold); border-radius: 6px; cursor: pointer; font-size: 1.3rem; font-weight: 600; transition: all 0.3s ease; white-space: nowrap; }
+.addFriendPopup .popupContent .popupCont .friendSection > div:first-child button:hover,
+.matchPopup .popupContent .popupCont .friendSection > div:first-child button:hover { border-color: var(--lol-gold); background: rgba(200, 170, 110, 0.1); }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem.active,
+.matchPopup .popupContent .popupCont .friendList .friendItem.active { background: rgba(200, 170, 110, 0.2); border-color: var(--lol-gold); box-shadow: 0 0 10px rgba(200, 170, 110, 0.3); }
+.addFriendPopup .popupContent .popupCont .friendList .friendItem.active > div > div:last-child,
+.matchPopup .popupContent .popupCont .friendList .friendItem.active > div > div:last-child { color: rgba(255, 255, 255, 0.9); }
+
+/* 선택된 참가자 목록 */
+.matchPopup .popupContent .popupCont .selectedParticipants { margin-top: 20px; }
+.matchPopup .popupContent .popupCont .selectedParticipants > h3 { color: var(--lol-gold); font-size: 1.6rem; font-weight: 600; margin-bottom: 15px; }
+.matchPopup .popupContent .popupCont .selectedParticipants > div { margin-bottom: 20px; border-radius: 8px; padding: 15px; min-height: 100px; border: 1px solid rgba(200, 170, 110, 0.3); }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem { padding: 15px; background: var(--lol-item-bg); border-radius: 6px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(200, 170, 110, 0.2); }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem:last-child { margin-bottom: 0; }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem > div:first-child { flex: 1; }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem > div:first-child > div:first-child { font-weight: 600; font-size: 1.4rem; color: var(--input-color); margin-bottom: 10px; }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem > div:first-child > div:last-child { display: flex; gap: 15px; font-size: 1.3rem; }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem > div:first-child > div:last-child label { color: var(--input-color); cursor: pointer; display: flex; align-items: center; gap: 6px; }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem > div:first-child > div:last-child input[type="radio"] { cursor: pointer; accent-color: var(--lol-gold); }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem button { padding: 8px 16px; background: #ef4444; color: #fff; border: none; border-radius: 6px; cursor: pointer; font-size: 1.3rem; font-weight: 600; transition: opacity 0.3s ease; }
+.matchPopup .popupContent .popupCont .selectedParticipants .selectedItem button:hover { opacity: 0.85; }
+
+/* 매칭 결과 박스 */
+.matchPopup .popupContent .popupCont .matchResultBox { display: flex; flex-direction: column; gap: 25px; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamTabs { display: flex; gap: 10px; padding: 15px; background: var(--lol-dark-bg); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 8px; flex-wrap: wrap; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamTab { padding: 10px 20px; background: var(--lol-item-bg); border: 1px solid rgba(200, 170, 110, 0.2); color: var(--input-color); font-size: 1.4rem; font-weight: 600; border-radius: 6px; cursor: pointer; transition: all 0.3s ease; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamTab:hover { border-color: var(--lol-gold); background: rgba(200, 170, 110, 0.1); }
+.matchPopup .popupContent .popupCont .matchResultBox .teamTab.active { background: var(--lol-gold); color: var(--lol-dark-bg); border-color: var(--lol-gold); box-shadow: 0 0 10px rgba(200, 170, 110, 0.5); }
+.matchPopup .popupContent .popupCont .matchResultBox .balanceScore { text-align: center; padding: 20px; background: var(--lol-dark-bg); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 8px; }
+.matchPopup .popupContent .popupCont .matchResultBox .balanceScore span { display: block; color: rgba(200, 170, 110, 0.7); font-size: 1.4rem; margin-bottom: 10px; }
+.matchPopup .popupContent .popupCont .matchResultBox .balanceScore strong { color: var(--lol-gold); font-size: 2.4rem; font-weight: 700; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamsResult { display: flex; gap: 20px; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult { flex: 1; padding: 20px; background: var(--lol-dark-bg); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 8px; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult h3 { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; text-align: center; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult.blueTeam { border-color: #5b9bd5; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult.blueTeam h3 { color: #5b9bd5; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult.redTeam { border-color: #d11b52; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult.redTeam h3 { color: #d11b52; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult ul { display: flex; flex-direction: column; gap: 10px; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult ul li { padding: 12px; background: var(--lol-item-bg); border: 1px solid rgba(200, 170, 110, 0.2); border-radius: 6px; color: var(--input-color); font-size: 1.4rem; display: flex; justify-content: space-between; align-items: center; }
+.matchPopup .popupContent .popupCont .matchResultBox .teamResult ul li .meTag { padding: 4px 8px; background: var(--lol-gold); color: var(--lol-dark-bg); border-radius: 4px; font-size: 1.2rem; font-weight: 600; }
+
+/* 미매칭 참가자 */
+.matchPopup .popupContent .popupCont .matchResultBox .unmatchedPlayers { padding: 20px; background: rgba(30, 35, 47, 0.6); border: 1px solid rgba(255, 165, 0, 0.3); border-radius: 8px; }
+.matchPopup .popupContent .popupCont .matchResultBox .unmatchedPlayers h3 { font-size: 1.6rem; font-weight: 700; color: rgba(255, 165, 0, 0.9); margin-bottom: 15px; text-align: center; }
+
+/* 내 정보 수정 팝업 */
+.myInfoEditSection { display: flex; flex-direction: column; gap: 20px; }
+.myInfoEditSection .inputGroup { display: flex; flex-direction: column; gap: 8px; }
+.myInfoEditSection .inputGroup label { color: var(--input-color); font-size: 1.4rem; font-weight: 600; }
+.myInfoEditSection .inputGroup input { width: 100%; padding: 12px; background: var(--point-input-bg); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 8px; color: var(--input-color); font-size: 1.4rem; }
+.myInfoEditSection .inputGroup select { width: 100%; padding: 12px; background: var(--point-input-bg); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 8px; color: var(--input-color); font-size: 1.4rem; cursor: pointer; }
+.myInfoEditSection .positionGroup { display: flex; flex-direction: column; gap: 8px; }
+.myInfoEditSection .positionGroup label { color: var(--input-color); font-size: 1.4rem; font-weight: 600; }
+.myInfoEditSection .positionGroup .positionRow { display: flex; gap: 10px; }
+.myInfoEditSection .positionGroup .positionRow select { flex: 1; padding: 12px; background: var(--point-input-bg); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 8px; color: var(--input-color); font-size: 1.4rem; cursor: pointer; }
+.myInfoEditSection .buttonGroup { display: flex; gap: 10px; margin-top: 10px; }
+.myInfoEditSection .buttonGroup button { flex: 1; }
+.myInfoEditSection .buttonGroup .cancelBtn { background: rgba(200, 170, 110, 0.2); border: 1px solid var(--lol-gold); }
+.myInfoEditSection .buttonGroup .cancelBtn:hover { background: rgba(200, 170, 110, 0.3); }
+.matchPopup .popupContent .popupCont .matchResultBox .unmatchedPlayers ul { display: flex; flex-wrap: wrap; gap: 10px; }
+.matchPopup .popupContent .popupCont .matchResultBox .unmatchedPlayers ul li { padding: 10px 12px; background: var(--lol-item-bg); border: 1px solid rgba(255, 165, 0, 0.2); border-radius: 6px; color: var(--input-color); font-size: 1.3rem; display: flex; align-items: center; gap: 8px; }
+.matchPopup .popupContent .popupCont .matchResultBox .unmatchedPlayers ul li .meTag { padding: 4px 8px; background: var(--lol-gold); color: var(--lol-dark-bg); border-radius: 4px; font-size: 1.2rem; font-weight: 600; }
+
+/* 내 정보 수정 페이지 */
+.mainWrap .myInfoForm,
+.mainWrap .joinForm { margin: 0 auto; padding: 40px; }
+.mainWrap .myInfoForm .sectionContent,
+.mainWrap .joinForm .sectionContent { padding: 30px 0; width: 100%; border-bottom: 1px solid var(--border-color); }
+.mainWrap .myInfoForm .sectionContent .subTitle,
+.mainWrap .joinForm .sectionContent .subTitle { font-size: 1.8rem; line-height: 1.8rem; font-weight: 500; color: var(--input-color); margin-bottom: 20px; }
+.mainWrap .myInfoForm .sectionContent .flexColumn,
+.mainWrap .joinForm .sectionContent .flexColumn { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px; width: 100%; }
+.mainWrap .myInfoForm .sectionContent .flexColumn li,
+.mainWrap .joinForm .sectionContent .flexColumn li { width: 100%; }
+.mainWrap .myInfoForm .sectionContent:last-of-type,
+.mainWrap .joinForm .sectionContent:last-of-type { border: none; }
+.mainWrap .myInfoForm .passwordChangeBtn { width: 100%; padding: 12px; background: rgba(200, 170, 110, 0.2); border: 1px solid var(--lol-gold); border-radius: 8px; color: var(--lol-gold); font-size: 1.4rem; cursor: pointer; transition: all 0.3s ease; font-weight: 600; }
+.mainWrap .myInfoForm .passwordChangeBtn:hover { background: rgba(200, 170, 110, 0.3); }
+.mainWrap .buttonGroup { width: 100%; display: flex; gap: 10px; margin-top: 20px; padding-top: 20px; }
+.mainWrap .buttonGroup button { flex: 1; }
+.mainWrap .buttonGroup .cancelBtn { background: rgba(200, 170, 110, 0.2); border: 1px solid var(--lol-gold); }
+.mainWrap .buttonGroup .cancelBtn:hover { background: rgba(200, 170, 110, 0.3); }
+
+/* 관리자 설정 페이지 */
+.adminSettingsWrap { padding: 40px; }
+.adminSettingsWrap .settingSection { margin-bottom: 40px; padding-bottom: 40px; width: 100%; border-bottom: 1px solid var(--border-color); }
+.adminSettingsWrap .settingSection:last-of-type { border-bottom: none; margin-bottom: 20px; }
+.adminSettingsWrap .settingHeader { margin-bottom: 25px; }
+.adminSettingsWrap .settingHeader h2 { font-size: 2rem; font-weight: 700; color: var(--input-color); margin-bottom: 10px; }
+.adminSettingsWrap .settingHeader p { font-size: 1.3rem; color: rgba(255, 255, 255, 0.6); }
+
+/* 포지션별 가산점 그리드 */
+.adminSettingsWrap .positionBonusGrid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
+.adminSettingsWrap .positionBonusGrid .bonusItem { display: flex; flex-direction: column; gap: 10px; }
+.adminSettingsWrap .positionBonusGrid .bonusItem label { font-size: 1.5rem; font-weight: 600; color: var(--input-color); text-align: center; }
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl { display: flex; align-items: center; gap: 5px; position: relative; }
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl input { flex: 1; padding: 12px 35px 12px 12px; background: var(--point-input-bg); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 8px; color: var(--input-color); font-size: 1.6rem; font-weight: 600; text-align: center; width: 100%; }
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl input::-webkit-outer-spin-button,
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl input[type=number] { -moz-appearance: textfield; }
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl input.positive { border-color: #4caf50; color: #4caf50; }
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl input.negative { border-color: #f44336; color: #f44336; }
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl input.neutral { border-color: rgba(200, 170, 110, 0.3); color: var(--input-color); }
+.adminSettingsWrap .positionBonusGrid .bonusItem .bonusControl .bonusLabel { font-size: 1.4rem; color: var(--input-color); font-weight: 600; position: absolute; right: 15px; pointer-events: none; }
+
+/* 티어별 점수 그리드 */
+.adminSettingsWrap .tierScoreGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+.adminSettingsWrap .tierScoreGrid .tierScoreItem { display: flex; flex-direction: column; gap: 8px; }
+.adminSettingsWrap .tierScoreGrid .tierScoreItem label { font-size: 1.3rem; font-weight: 600; color: var(--input-color); text-align: center; }
+.adminSettingsWrap .tierScoreGrid .tierScoreItem input { padding: 10px; background: var(--point-input-bg); border: 1px solid rgba(200, 170, 110, 0.3); border-radius: 8px; color: var(--input-color); font-size: 1.4rem; text-align: center; }
+.adminSettingsWrap .tierScoreGrid .tierScoreItem input::-webkit-outer-spin-button,
+.adminSettingsWrap .tierScoreGrid .tierScoreItem input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.adminSettingsWrap .tierScoreGrid .tierScoreItem input[type=number] { -moz-appearance: textfield; }
+.adminSettingsWrap .tierScoreGrid .tierScoreItem input:focus { border-color: var(--lol-gold); outline: none; }
+
+/* 관리자 버튼 그룹 */
+.adminSettingsWrap .adminButtonGroup { width: 100%; display: flex; gap: 15px; }
+.adminSettingsWrap .adminButtonGroup button { flex: 1; }
+.adminSettingsWrap .adminButtonGroup .resetBtn { background: rgba(244, 67, 54, 0.2); border: 1px solid #f44336; color: #f44336; }
+.adminSettingsWrap .adminButtonGroup .resetBtn:hover { background: rgba(244, 67, 54, 0.3); }
+
+/* Footer */
+footer { margin-top: auto; padding: 30px 20px; text-align: center; background: rgba(28, 32, 40, 0.5); border-top: 1px solid var(--card-border-color); }
+footer p { color: rgba(230, 234, 243, 0.6); font-size: 1.3rem; line-height: 1.3rem; }
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .adminSettingsWrap .positionBonusGrid { grid-template-columns: repeat(3, 1fr); }
+  .adminSettingsWrap .tierScoreGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+
 
 

@@ -1,14 +1,47 @@
+<script setup>
+const serviceTerms = ref(false)
+const privacyTerms = ref(false)
+const ageTerms = ref(false)
+const marketingTerms = ref(false)
+const eventTerms = ref(false)
+
+const allAgree = computed({
+  get: () => serviceTerms.value && privacyTerms.value && ageTerms.value && marketingTerms.value && eventTerms.value,
+  set: (val) => {
+    serviceTerms.value = val
+    privacyTerms.value = val
+    ageTerms.value = val
+    marketingTerms.value = val
+    eventTerms.value = val
+  }
+})
+
+const goToLogin = () => {
+  navigateTo('/')
+}
+
+const viewTerms = (type) => {
+  navigateTo(`/terms?type=${type}`)
+}
+</script>
+
 <template>
-  <div class="container joinWrap card customInputBox customCheckBox customSelectBox">
-    <form action="">
-      <div class="sectionTitle">
-        <h2>회원가입</h2>
-      </div>
-      <div class="sectionContent">
-        <div class="subTitle">
-          <p>기본정보</p>
+  <div class="container">
+    <div class="mainWrap">
+      <div class="nameCard">
+        <h1>회원가입</h1>
+        <div>
+          <p>새로운 계정을 만들어보세요</p>
+          <button type="button" class="backBtn" @click="goToLogin">← 로그인으로</button>
         </div>
-        <ul class="flexColumn">
+      </div>
+
+      <form class="card customInputBox customCheckBox customSelectBox joinForm">
+        <div class="sectionContent">
+          <div class="subTitle">
+            <p>기본정보</p>
+          </div>
+          <ul class="flexColumn">
           <li class="pointInputField">
             <label for="userId">아이디</label>
             <input type="text" name="userId" id="userId" autocomplete="userId" placeholder="아이디를 입력해주세요">
@@ -167,30 +200,30 @@
         <ul class="flexColumn">
           <!-- 전체 동의 -->
           <li class="allAgreeBox checkboxWrap">
-            <input type="checkbox" name="allAgree" id="allAgree">
+            <input type="checkbox" name="allAgree" id="allAgree" v-model="allAgree">
             <label for="allAgree">전체 약관에 동의합니다</label>
           </li>
           
           <!-- 필수 약관들 -->
           <li class="termsItem">
             <div class="checkboxWrap">
-              <input type="checkbox" name="serviceTerms" id="serviceTerms" required>
+              <input type="checkbox" name="serviceTerms" id="serviceTerms" required v-model="serviceTerms">
               <label for="serviceTerms">[필수] 서비스 이용약관 동의</label>
             </div>
-            <button type="button" class="termsViewBtn">보기</button>
+            <button type="button" class="termsViewBtn" @click="viewTerms('service')">보기</button>
           </li>
           
           <li class="termsItem">
             <div class="checkboxWrap">
-              <input type="checkbox" name="privacyTerms" id="privacyTerms" required>
+              <input type="checkbox" name="privacyTerms" id="privacyTerms" required v-model="privacyTerms">
               <label for="privacyTerms">[필수] 개인정보 수집 및 이용 동의</label>
             </div>
-            <button type="button" class="termsViewBtn">보기</button>
+            <button type="button" class="termsViewBtn" @click="viewTerms('privacy')">보기</button>
           </li>
           
           <li class="termsItem">
             <div class="checkboxWrap">
-              <input type="checkbox" name="ageTerms" id="ageTerms" required>
+              <input type="checkbox" name="ageTerms" id="ageTerms" required v-model="ageTerms">
               <label for="ageTerms">[필수] 만 14세 이상입니다</label>
             </div>
           </li>
@@ -198,29 +231,23 @@
           <!-- 선택 약관들 -->
           <li class="termsItem">
             <div class="checkboxWrap">
-              <input type="checkbox" name="marketingTerms" id="marketingTerms">
+              <input type="checkbox" name="marketingTerms" id="marketingTerms" v-model="marketingTerms">
               <label for="marketingTerms">[선택] 마케팅 정보 수신 동의</label>
             </div>
-            <button type="button" class="termsViewBtn">보기</button>
+            <button type="button" class="termsViewBtn" @click="viewTerms('marketing')">보기</button>
           </li>
           
           <li class="termsItem">
             <div class="checkboxWrap">
-              <input type="checkbox" name="eventTerms" id="eventTerms">
+              <input type="checkbox" name="eventTerms" id="eventTerms" v-model="eventTerms">
               <label for="eventTerms">[선택] 이벤트 및 혜택 알림 동의</label>
             </div>
-            <button type="button" class="termsViewBtn">보기</button>
+            <button type="button" class="termsViewBtn" @click="viewTerms('event')">보기</button>
           </li>
         </ul>
-      </div>
-      <button type="submit" class="fullBtn">회원가입</button>
-    </form>
-
+        </div>
+        <button type="submit" class="fullBtn">회원가입</button>
+      </form>
+    </div>
   </div>
 </template>
-
-<script lang="ts" setup>
-
-</script>
-
-<style></style>
