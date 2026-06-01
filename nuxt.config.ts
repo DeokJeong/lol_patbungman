@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   css: [ '~/assets/common.css' ],
   runtimeConfig: {
     public: {
-      apiBase: process.env.NUXT_PUBLIC_API_BASE || 'https://api.example.com'
+      apiBase: process.env.NUXT_PUBLIC_API_BASE
     }
   }
 })
