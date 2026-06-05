@@ -1,26 +1,27 @@
 import { useApi } from './useApi'
 
 type RegisterPayload = {
-  userId: string
-  userPw: string
-  mainLine: string
-  subLine: string
-  tierTop: string
-  tierJungle: string
-  tierMid: string
-  tierAdc: string
-  tierSupport: string
+  user_id: string
+  user_pw: string
+  email: string
+  main_line: string
+  sub_line: string
+  tier_top: string
+  tier_jungle: string
+  tier_mid: string
+  tier_adc: string
+  tier_support: string
   question: string
   answer: string
-  serviceTerms: boolean
-  privacyTerms: boolean
-  ageTerms: boolean
-  marketingTerms?: boolean
-  eventTerms?: boolean
+  service_terms: boolean
+  privacy_terms: boolean
+  age_terms: boolean
+  marketing_terms?: boolean
+  event_terms?: boolean
 }
 
 type LoginPayload = {
-  username: string
+  userId: string
   password: string
 }
 
@@ -39,7 +40,7 @@ export const useAuthApi = () => {
   const login = async (credentials: LoginPayload) => {
     return await api('/api/accounts/login/', {
       method: 'POST',
-      body: { username: credentials.username, password: credentials.password }
+      body: { user_id: credentials.userId, password: credentials.password }
     })
   }
 

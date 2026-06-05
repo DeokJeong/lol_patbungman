@@ -1,3 +1,5 @@
+import { useCookie } from 'nuxt/app'
+
 // API 호출을 위한 공통 함수를 만드는 composable
 // 1. .env 파일
 //    ↓
@@ -11,18 +13,27 @@
 export const useApi = () => {
   const config = useRuntimeConfig()
   const baseURL = config.public.apiBase
+  const accessToken = useCookie<string | null>('access_token')
+  const refreshToken = useCookie<string | null>('refresh_token')
+  // 동시에 여러 요청이 401이어도 refresh API는 한 번만 호출하기 위한 잠금값
+  let refreshPromise: Promise<string | null> | null = null
 
-  const api = $fetch.create({
+  const client = $fetch.create({
 
     baseURL,
     
     onRequest({ options }) {
-      // 여기서 요청 옵션(헤더, 바디 등)을 수정할 수 있음
-      // 나중에 로그인 토큰을 자동으로 헤더에 추가할 때 사용
-      // options.headers = {
-      //   ...options.headers,  // 기존 헤더 유지
-      //   Authorization: `Bearer ${token}`  // 토큰 추가
-      // }
+      // access token이 있으면 모든 요청에 자동 부착
+      const token = accessToken.value
+      if (!token) {
+        return
+      }
+
+      const headers = new Headers(options.headers as HeadersInit | undefined)
+      if (!headers.has('Authorization')) {
+        headers.set('Authorization', `Bearer ${token}`)
+      }
+      options.headers = headers
     },
 
     // 서버에서 에러 응답(4xx, 5xx)이 왔을 때 실행되는 함수
@@ -45,6 +56,83 @@ export const useApi = () => {
       }
     }
   })
+
+  const refreshAccessToken = async () => {
+    // 이미 refresh 진행 중이면 기존 Promise를 재사용
+    if (refreshPromise) {
+      return await refreshPromise
+    }
+
+    refreshPromise = (async () => {
+      const currentRefreshToken = refreshToken.value
+      if (!currentRefreshToken) {
+        // refresh token 자체가 없으면 재발급 불가
+        return null
+      }
+
+      try {
+        const response: any = await $fetch('/api/accounts/token/refresh/', {
+          baseURL,
+          method: 'POST',
+          body: { refresh: currentRefreshToken }
+        })
+
+        const nextAccess = response?.access ?? response?.access_token ?? null
+        const nextRefresh = response?.refresh ?? response?.refresh_token ?? null
+
+        if (!nextAccess) {
+          // 성공 응답이어도 access가 없으면 실패로 간주
+          return null
+        }
+
+        accessToken.value = nextAccess
+        if (nextRefresh) {
+          refreshToken.value = nextRefresh
+        }
+
+        return nextAccess
+      } catch {
+        // refresh 실패 시 인증 정보를 비워서 잘못된 상태를 방지
+        accessToken.value = null
+        refreshToken.value = null
+        return null
+      } finally {
+        refreshPromise = null
+      }
+    })()
+
+    return await refreshPromise
+  }
+
+  const api = async <T>(request: string, options: any = {}): Promise<T> => {
+    try {
+      return await client<T>(request, options)
+    } catch (error: any) {
+      const status = error?.response?.status
+      const hasRetried = Boolean(options?._retry)
+      const isRefreshEndpoint = request.includes('/api/accounts/token/refresh/')
+
+      // 401이 아니거나, 이미 재시도했거나, refresh 요청 자체면 그대로 실패 처리
+      if (status !== 401 || hasRetried || isRefreshEndpoint) {
+        throw error
+      }
+
+      // 401이면 refresh 후 원요청 1회 재시도
+      const nextAccessToken = await refreshAccessToken()
+      if (!nextAccessToken) {
+        throw error
+      }
+
+      const retryHeaders = new Headers(options?.headers as HeadersInit | undefined)
+      retryHeaders.set('Authorization', `Bearer ${nextAccessToken}`)
+
+      return await client<T>(request, {
+        ...options,
+        _retry: true,
+        headers: retryHeaders
+      })
+    }
+  }
 
   // 생성한 API 클라이언트 함수를 반환
   // 다른 곳에서 const api = useApi()로 사용 가능

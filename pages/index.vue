@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '~/stores/auth';
 
-const { login } = useAuthApi();
+const authStore = useAuthStore();
 const router = useRouter();
-
-// 토큰 & 유저 정보 저장소
-const accessToken = useCookie('access_token');
-const refreshToken = useCookie('refresh_token');
-const userInfo = useState('user', () => null);
 
 // 로그인 폼
 const userId = ref('');
@@ -16,7 +13,7 @@ const errorMsg = ref('');
 const isLoading = ref(false);
 
 // 비밀번호 보이기/숨기기 기능
-const userPwInput = ref(null);
+const userPwInput = ref<any>(null);
 const isPasswordVisible = ref(false);
 
 const togglePasswordVisibility = () => {
@@ -39,10 +36,7 @@ const handleLogin = async () => {
   }
   isLoading.value = true;
   try {
-    const response: any = await login({ username: userId.value, password: userPw.value });
-    accessToken.value = response.access;
-    refreshToken.value = response.refresh;
-    userInfo.value = response.user;
+    await authStore.login({ userId: userId.value, password: userPw.value });
     router.push('/main');
   } catch (e: any) {
     if (e?.response?.status === 401) {
