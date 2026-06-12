@@ -1,7 +1,13 @@
 <script setup>
+const authStore = useAuthStore()
+const { updateProfile, getProfile } = useAuthApi()
+
 // 내 정보 수정 데이터
 const myInfo = ref({
   name: '플레이어이름',
+  riotGameName: '',
+  riotTagLine: '',
+  riotServer: 'asia',
   password: '',
   passwordConfirm: '',
   primaryPos: '미드',
@@ -13,8 +19,22 @@ const myInfo = ref({
   supportTier: 'Gold III'
 })
 
+// 페이지 진입 시 프로필 값 로드
+onMounted(async () => {
+  const profile = authStore.user || await authStore.fetchProfile()
+  if (!profile) {
+    return
+  }
+
+  myInfo.value.name = profile?.user_id || profile?.name || myInfo.value.name
+  myInfo.value.riotGameName = profile?.riot_game_name || profile?.game_name || ''
+  myInfo.value.riotTagLine = profile?.riot_tag_line || profile?.tag_line || ''
+  myInfo.value.riotServer = profile?.riot_server || profile?.server || 'asia'
+})
+
 const showPasswordChange = ref(false)
 
+// 비밀번호 변경 영역 토글
 const togglePasswordChange = () => {
   showPasswordChange.value = !showPasswordChange.value
   if (!showPasswordChange.value) {
@@ -23,12 +43,41 @@ const togglePasswordChange = () => {
   }
 }
 
-const saveMyInfo = () => {
-  // TODO: API 호출하여 정보 저장
-  alert('정보가 저장되었습니다')
-  navigateTo('/main')
+// 마이페이지 입력값 저장
+const saveMyInfo = async () => {
+  if (!myInfo.value.riotGameName || !myInfo.value.riotTagLine || !myInfo.value.riotServer) {
+    alert('게임 내 아이디, 태그, 서버를 입력해주세요.')
+    return
+  }
+
+  if (showPasswordChange.value && myInfo.value.password !== myInfo.value.passwordConfirm) {
+    alert('비밀번호 확인이 일치하지 않습니다.')
+    return
+  }
+
+  try {
+    const payload = {
+      riot_game_name: myInfo.value.riotGameName,
+      riot_tag_line: myInfo.value.riotTagLine,
+      riot_server: myInfo.value.riotServer
+    }
+
+    if (showPasswordChange.value && myInfo.value.password) {
+      payload.user_pw = myInfo.value.password
+    }
+
+    await updateProfile(payload)
+    const latestProfile = await getProfile()
+    authStore.user = latestProfile
+
+    alert('정보가 저장되었습니다')
+    navigateTo('/main')
+  } catch {
+    alert('정보 저장에 실패했습니다. 다시 시도해주세요.')
+  }
 }
 
+// 메인 페이지로 이동
 const cancel = () => {
   navigateTo('/main')
 }
@@ -54,6 +103,23 @@ const cancel = () => {
             <li class="pointInputField">
               <label for="userName">닉네임</label>
               <input type="text" name="userName" id="userName" v-model="myInfo.name" placeholder="닉네임을 입력해주세요" readonly>
+            </li>
+            <li class="pointInputField">
+              <label for="riotGameName">게임 내 아이디</label>
+              <input type="text" name="riotGameName" id="riotGameName" v-model="myInfo.riotGameName" placeholder="게임 내 아이디를 입력해주세요">
+            </li>
+            <li class="pointInputField">
+              <label for="riotTagLine">태그</label>
+              <input type="text" name="riotTagLine" id="riotTagLine" v-model="myInfo.riotTagLine" placeholder="태그를 입력해주세요 (예: KR1)">
+            </li>
+            <li class="pointInputField">
+              <label for="riotServer">서버</label>
+              <select name="riotServer" id="riotServer" v-model="myInfo.riotServer">
+                <option value="asia">ASIA</option>
+                <option value="americas">AMERICAS</option>
+                <option value="europe">EUROPE</option>
+                <option value="sea">SEA</option>
+              </select>
             </li>
             <li>
               <button type="button" class="passwordChangeBtn" @click="togglePasswordChange">

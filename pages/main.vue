@@ -65,6 +65,43 @@ const filteredFriendList = computed(() => {
   )
 })
 
+// 포지션/티어를 한 줄 문자열로 포맷
+const formatPositionTier = (position, tier) => {
+  if (!position && !tier) {
+    return ''
+  }
+
+  if (position && tier) {
+    return `${position} (${tier})`
+  }
+
+  return position || tier || ''
+}
+
+// 주라인 텍스트 생성
+const getPrimaryTierText = (friend) => {
+  const hasPrimaryFields = Boolean(friend?.primaryPos || friend?.primaryTier)
+  const text = formatPositionTier(friend?.primaryPos || friend?.position, friend?.primaryTier || friend?.tier)
+
+  if (!text) {
+    return ''
+  }
+
+  return hasPrimaryFields ? `주: ${text}` : text
+}
+
+// 부라인 텍스트 생성
+const getSecondaryTierText = (friend) => {
+  const hasSecondaryFields = Boolean(friend?.secondaryPos || friend?.secondaryTier)
+  const text = formatPositionTier(friend?.secondaryPos, friend?.secondaryTier)
+
+  if (!text) {
+    return ''
+  }
+
+  return hasSecondaryFields ? `부: ${text}` : text
+}
+
 // 팝업 열기/닫기 함수
 const openResultPopup = () => {
   showResultPopup.value = true
@@ -123,6 +160,13 @@ const openMatchResultPopup = () => {
 const closeMatchResultPopup = () => {
   showMatchResultPopup.value = false
   document.body.style.overflow = ''
+}
+
+// 매칭 결과를 유지한 채 매칭 설정 화면으로 돌아가기
+const backToMatchSetupFromResult = () => {
+  showMatchResultPopup.value = false
+  showPopup.value = true
+  document.body.style.overflow = 'hidden'
 }
 
 const removeFriend = (friendId) => {
@@ -398,13 +442,12 @@ const startMatching = async () => {
               </div>
             </div>
           </li>
-          
           <li class="matchRecord">
             <div class="matchInfo between">
               <div>
                 <p class="matchResult pending">결과 미정</p>
                 <button type="button" @click="openResultPopup()">설정</button>
-                 <p class="matchBalance">팀 밸런스 점수: 88/100</p>
+                <p class="matchBalance">팀 밸런스 점수: 88/100</p>
               </div>
               <p class="matchDate">2024-06-14 19:15</p>
             </div>
@@ -585,8 +628,8 @@ const startMatching = async () => {
                 <div class="friendInfo">
                   <div class="friendName">{{ friend.name }}</div>
                   <div class="friendTierInfo">
-                    <span class="tierItem primary">주: {{ friend.primaryPos }} ({{ friend.primaryTier }})</span>
-                    <span class="tierItem secondary">부: {{ friend.secondaryPos }} ({{ friend.secondaryTier }})</span>
+                    <span v-if="getPrimaryTierText(friend)" class="tierItem primary">{{ getPrimaryTierText(friend) }}</span>
+                    <span v-if="getSecondaryTierText(friend)" class="tierItem secondary">{{ getSecondaryTierText(friend) }}</span>
                   </div>
                 </div>
               </div>
@@ -751,6 +794,7 @@ const startMatching = async () => {
           </div>
           
           <div class="matchBtnBox">
+            <button type="button" class="fullBtn" @click="backToMatchSetupFromResult">재매칭</button>
             <button type="button" class="fullBtn" @click="closeMatchResultPopup">확인</button>
           </div>
         </div>
@@ -822,8 +866,8 @@ const startMatching = async () => {
                 <div class="friendInfo">
                   <div class="friendName">{{ friend.name }}</div>
                   <div class="friendTierInfo">
-                    <span class="tierItem primary">주: {{ friend.primaryPos }} ({{ friend.primaryTier }})</span>
-                    <span class="tierItem secondary">부: {{ friend.secondaryPos }} ({{ friend.secondaryTier }})</span>
+                    <span v-if="getPrimaryTierText(friend)" class="tierItem primary">{{ getPrimaryTierText(friend) }}</span>
+                    <span v-if="getSecondaryTierText(friend)" class="tierItem secondary">{{ getSecondaryTierText(friend) }}</span>
                   </div>
                 </div>
                 <button type="button" class="friendDeleteBtn" @click="removeFriend(friend.id)">
@@ -837,3 +881,9 @@ const startMatching = async () => {
     </div>
   </div>
 </template>
+
+<style scoped>
+.matchRecordBox > ul > li:nth-child(n + 4) {
+  display: none;
+}
+</style>

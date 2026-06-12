@@ -9,6 +9,9 @@ const userId = ref('')       // 아이디 입력 필드와 연결
 const userPw = ref('')       // 비밀번호 입력 필드와 연결
 const userRePw = ref('')     // 비밀번호 재입력 필드와 연결 (submit 시 일치 여부 검사용)
 const userEmail = ref('')    // 이메일 입력 필드와 연결
+const riotGameName = ref('') // Riot 게임 이름 입력 필드와 연결
+const riotTagLine = ref('')  // Riot 태그 입력 필드와 연결
+const riotServer = ref('asia') // Riot 서버 입력 필드와 연결
 
 // 라인 선택값
 const mainLine = ref('')     // 주 라인 select와 연결
@@ -86,6 +89,11 @@ const handleSubmit = async () => {
     return
   }
 
+  if (!riotGameName.value || !riotTagLine.value || !riotServer.value) {
+    alert('Riot 게임이름, 태그, 서버를 입력해주세요.')
+    return
+  }
+
   // 필수 약관 동의 여부 검사
   // 필수 3개(서비스, 개인정보, 나이)가 모두 체크돼야 가입 가능
   if (!serviceTerms.value || !privacyTerms.value || !ageTerms.value) {
@@ -103,6 +111,9 @@ const handleSubmit = async () => {
       user_id: userId.value,
       user_pw: userPw.value,
       email: userEmail.value,
+      riot_game_name: riotGameName.value,
+      riot_tag_line: riotTagLine.value,
+      riot_server: riotServer.value,
       main_line: mainLine.value,
       sub_line: subLine.value,
       tier_top: tierTop.value,
@@ -185,6 +196,23 @@ const viewTerms = (type) => {
             <li class="pointInputField">
               <label for="userEmail">이메일</label>
               <input type="email" name="userEmail" id="userEmail" autocomplete="email" placeholder="이메일을 입력해주세요" required v-model="userEmail">
+            </li>
+            <li class="pointInputField">
+              <label for="riotGameName">Riot 게임이름</label>
+              <input type="text" name="riotGameName" id="riotGameName" placeholder="예: Hide on bush" v-model="riotGameName">
+            </li>
+            <li class="pointInputField">
+              <label for="riotTagLine">Riot 태그</label>
+              <input type="text" name="riotTagLine" id="riotTagLine" placeholder="예: KR1" v-model="riotTagLine">
+            </li>
+            <li class="pointInputField">
+              <label for="riotServer">Riot 서버</label>
+              <select name="riotServer" id="riotServer" v-model="riotServer">
+                <option value="asia">ASIA</option>
+                <option value="americas">AMERICAS</option>
+                <option value="europe">EUROPE</option>
+                <option value="sea">SEA</option>
+              </select>
             </li>
           </ul>
         </div>
