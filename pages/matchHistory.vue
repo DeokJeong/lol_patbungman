@@ -1,16 +1,8 @@
 <script setup>
-// 경기 결과 팝업
 const showResultPopup = ref(false)
-const riotGameName = ref('')
-const riotTagLine = ref('')
-const riotServer = ref('')
 const riotPuuid = ref('')
-const riotMatchIds = ref([])
 const riotMatches = ref([])
-const riotNameCache = ref({})
-const isLoadingPuuid = ref(false)
 const isLoadingMatches = ref(false)
-const puuidError = ref('')
 const matchesError = ref('')
 const recentMatchCount = 10
 const myMainLine = ref('')
@@ -30,26 +22,23 @@ const nameTooltip = ref({
   y: 0
 })
 const authStore = useAuthStore()
-const temporaryRiotProfile = {
-  gameName: '마음만은 청춘',
-  tagLine: '나 젊어요',
-  server: 'asia'
-}
 
-// 프로필의 Riot 정보 로드 (없으면 임시값 사용)
+const {
+  endpoint,
+  parseRiotId,
+  buildRiotIdKey,
+  getMatchHistory
+} = useMatchApi()
+
 const loadRiotProfile = async () => {
   try {
     const profile = authStore.user || await authStore.fetchProfile()
-    riotGameName.value = profile?.riot_game_name || profile?.game_name || temporaryRiotProfile.gameName
-    riotTagLine.value = profile?.riot_tag_line || profile?.tag_line || temporaryRiotProfile.tagLine
-    riotServer.value = profile?.riot_server || profile?.server || temporaryRiotProfile.server
+    riotPuuid.value = profile?.puuid || profile?.riot_puuid || ''
     myMainLine.value = profile?.main_line || profile?.mainLine || ''
     mySubLine.value = profile?.sub_line || profile?.subLine || ''
     myTierByLine.value = buildTierByLine(profile)
   } catch {
-    riotGameName.value = temporaryRiotProfile.gameName
-    riotTagLine.value = temporaryRiotProfile.tagLine
-    riotServer.value = temporaryRiotProfile.server
+    riotPuuid.value = ''
     myMainLine.value = ''
     mySubLine.value = ''
     myTierByLine.value = {
@@ -62,17 +51,6 @@ const loadRiotProfile = async () => {
   }
 }
 
-const {
-  endpoint,
-  parseRiotId,
-  buildRiotIdKey,
-  getPuuidByRiotId,
-  getAccountByPuuid,
-  getMatchIdsByPuuid,
-  getMatchDetailByMatchId
-} = useMatchApi()
-
-// 매치 시간 포맷
 const formatGameDate = (timestamp) => {
   if (!timestamp) {
     return '-'
@@ -80,7 +58,6 @@ const formatGameDate = (timestamp) => {
   return new Date(timestamp).toLocaleString('ko-KR')
 }
 
-// Riot 포지션 코드를 한글 라인명으로 변환
 const formatPosition = (position) => {
   const map = {
     TOP: '탑',
@@ -92,7 +69,6 @@ const formatPosition = (position) => {
   return map[position] || '기타'
 }
 
-// 라인명을 비교 가능한 키(top/jungle/mid/adc/support)로 정규화
 const normalizeLineKey = (line) => {
   const value = String(line || '').trim().toLowerCase()
 
@@ -118,7 +94,6 @@ const normalizeLineKey = (line) => {
   return map[value] || ''
 }
 
-// 라인 키를 화면용 한글명으로 변환
 const formatLineLabel = (line) => {
   const key = normalizeLineKey(line)
   const map = {
@@ -132,7 +107,6 @@ const formatLineLabel = (line) => {
   return map[key] || String(line || '').trim() || '-'
 }
 
-// 라인+티어 문구 생성 (예: 주: 원딜 (Platinum III))
 const formatLineTierText = (prefix, line, tier) => {
   if (!line) {
     return ''
@@ -148,7 +122,6 @@ const formatLineTierText = (prefix, line, tier) => {
   return `${prefix}: ${lineLabel}`
 }
 
-// 객체에서 라인별 티어 정보 추출
 const buildTierByLine = (source) => {
   return {
     top: source?.tier_top || source?.tierTop || source?.topTier || '',
@@ -159,31 +132,12 @@ const buildTierByLine = (source) => {
   }
 }
 
-// 주/부 라인 표시 문자열 생성
-const formatMainSubLine = (mainLine, subLine) => {
-  if (!mainLine && !subLine) {
-    return ''
-  }
-
-  if (mainLine && subLine) {
-    return `주: ${mainLine} / 부: ${subLine}`
-  }
-
-  if (mainLine) {
-    return `주: ${mainLine}`
-  }
-
-  return `부: ${subLine}`
-}
-
-// 저장된 친구 라인 정보 로드 (localStorage 사용)
 const loadFriendLineMap = () => {
   if (!import.meta.client) {
     return
   }
 
   const keys = ['friend_list', 'friends']
-
   for (const key of keys) {
     const raw = localStorage.getItem(key)
     if (!raw) {
@@ -210,8 +164,7 @@ const loadFriendLineMap = () => {
           continue
         }
 
-        const friendKey = buildRiotIdKey(gameName, tagLine)
-        nextMap[friendKey] = {
+        nextMap[buildRiotIdKey(gameName, tagLine)] = {
           mainLine: mainLine || '',
           subLine: subLine || '',
           mainTier,
@@ -228,7 +181,6 @@ const loadFriendLineMap = () => {
   }
 }
 
-// 본인/친구 여부에 따라 회원가입 기준 주/부 라인 문구 생성
 const getPlayerProfileLineTexts = (participant, summonerName) => {
   if (participant?.puuid === riotPuuid.value) {
     const mainKey = normalizeLineKey(myMainLine.value)
@@ -244,17 +196,12 @@ const getPlayerProfileLineTexts = (participant, summonerName) => {
 
   const parsed = parseRiotId(summonerName)
   if (!parsed) {
-    return ''
+    return { main: '', sub: '' }
   }
 
-  const key = buildRiotIdKey(parsed.gameName, parsed.tagLine)
-  const friendLine = friendLineMap.value[key]
-
+  const friendLine = friendLineMap.value[buildRiotIdKey(parsed.gameName, parsed.tagLine)]
   if (!friendLine) {
-    return {
-      main: '',
-      sub: ''
-    }
+    return { main: '', sub: '' }
   }
 
   const mainKey = normalizeLineKey(friendLine.mainLine)
@@ -268,10 +215,9 @@ const getPlayerProfileLineTexts = (participant, summonerName) => {
   }
 }
 
-// 참가자 표시 이름 결정
 const getParticipantName = (participant) => {
-  const riotIdGameName = participant?.riotIdGameName
-  const riotIdTagline = participant?.riotIdTagline
+  const riotIdGameName = participant?.riotIdGameName || participant?.riot_id_game_name || participant?.gameName
+  const riotIdTagline = participant?.riotIdTagline || participant?.riot_id_tagline || participant?.tagLine
 
   if (riotIdGameName) {
     return riotIdTagline ? `${riotIdGameName}#${riotIdTagline}` : riotIdGameName
@@ -281,10 +227,17 @@ const getParticipantName = (participant) => {
     return participant.summonerName
   }
 
-  return riotNameCache.value[participant?.puuid] || 'Unknown'
+  if (participant?.summoner_name) {
+    return participant.summoner_name
+  }
+
+  if (participant?.name) {
+    return participant.name
+  }
+
+  return 'Unknown'
 }
 
-// 참가자 화면 표시 데이터 가공
 const toPlayerView = (participant) => {
   const summonerName = getParticipantName(participant)
   const profileLineTexts = getPlayerProfileLineTexts(participant, summonerName)
@@ -292,9 +245,9 @@ const toPlayerView = (participant) => {
   return {
     puuid: participant?.puuid || '',
     summonerName,
-    championName: participant?.championName || '-',
-    teamPosition: participant?.teamPosition || '',
-    matchLine: formatPosition(participant?.teamPosition),
+    championName: participant?.championName || participant?.champion_name || '-',
+    teamPosition: participant?.teamPosition || participant?.team_position || '',
+    matchLine: formatPosition(participant?.teamPosition || participant?.team_position),
     profileMainLine: profileLineTexts.main,
     profileSubLine: profileLineTexts.sub,
     kills: participant?.kills ?? 0,
@@ -303,104 +256,78 @@ const toPlayerView = (participant) => {
   }
 }
 
-// Riot ID -> puuid -> 최근 매치 상세 조회
-const fetchPuuid = async () => {
-  if (!riotGameName.value || !riotTagLine.value) {
-    puuidError.value = 'Riot 게임이름/태그가 필요합니다.'
-    riotPuuid.value = ''
-    riotMatchIds.value = []
+const extractMatches = (response) => {
+  if (Array.isArray(response)) return response
+  if (Array.isArray(response?.results)) return response.results
+  if (Array.isArray(response?.data)) return response.data
+  if (Array.isArray(response?.items)) return response.items
+  if (Array.isArray(response?.matches)) return response.matches
+  return []
+}
+
+const normalizeMatch = (rawMatch, index) => {
+  const participants = Array.isArray(rawMatch?.participants)
+    ? rawMatch.participants
+    : Array.isArray(rawMatch?.players)
+      ? rawMatch.players
+      : []
+
+  const blueTeam = Array.isArray(rawMatch?.blueTeam)
+    ? rawMatch.blueTeam
+    : participants.filter((participant) => participant?.teamId === 100 || participant?.team === 'blue')
+
+  const redTeam = Array.isArray(rawMatch?.redTeam)
+    ? rawMatch.redTeam
+    : participants.filter((participant) => participant?.teamId === 200 || participant?.team === 'red')
+
+  const me = [...blueTeam, ...redTeam].find((participant) => participant?.puuid === riotPuuid.value)
+
+  return {
+    matchId: rawMatch?.matchId || rawMatch?.match_id || rawMatch?.id || `match-${index}`,
+    gameMode: rawMatch?.gameMode || rawMatch?.game_mode || '-',
+    gameCreation: rawMatch?.gameCreation || rawMatch?.game_creation || rawMatch?.created_at || 0,
+    championName: me?.championName || me?.champion_name || rawMatch?.championName || rawMatch?.champion_name || '-',
+    kills: me?.kills ?? rawMatch?.kills ?? 0,
+    deaths: me?.deaths ?? rawMatch?.deaths ?? 0,
+    assists: me?.assists ?? rawMatch?.assists ?? 0,
+    win: typeof rawMatch?.win === 'boolean' ? rawMatch.win : Boolean(me?.win),
+    blueTeam: blueTeam.map(toPlayerView),
+    redTeam: redTeam.map(toPlayerView)
+  }
+}
+
+const fetchMatches = async () => {
+  if (!riotPuuid.value) {
+    matchesError.value = '프로필 puuid가 없습니다. 백엔드 프로필 응답에 puuid를 포함해주세요.'
     riotMatches.value = []
     return
   }
 
-  isLoadingPuuid.value = true
-  puuidError.value = ''
+  isLoadingMatches.value = true
   matchesError.value = ''
 
   try {
-    const account = await getPuuidByRiotId(riotGameName.value, riotTagLine.value)
-    riotPuuid.value = account.puuid
-    riotMatchIds.value = await getMatchIdsByPuuid(account.puuid, { count: recentMatchCount })
-
-    isLoadingMatches.value = true
-    const idsForDetail = riotMatchIds.value.slice(0, recentMatchCount)
-    const details = await Promise.all(idsForDetail.map((matchId) => getMatchDetailByMatchId(matchId)))
-
-    const allParticipants = details.flatMap((detail) => {
-      if (!Array.isArray(detail?.info?.participants)) {
-        return []
-      }
-      return detail.info.participants
-    })
-
-    const unknownPuuids = [...new Set(allParticipants
-      .filter((participant) => !participant?.riotIdGameName && !participant?.summonerName)
-      .map((participant) => participant?.puuid)
-      .filter(Boolean))]
-
-    if (unknownPuuids.length) {
-      const resolvedNameEntries = await Promise.all(unknownPuuids.map(async (puuid) => {
-        try {
-          const account = await getAccountByPuuid(puuid)
-          const fallbackName = account?.gameName
-            ? `${account.gameName}${account?.tagLine ? `#${account.tagLine}` : ''}`
-            : 'Unknown'
-
-          return [puuid, fallbackName]
-        } catch {
-          return [puuid, 'Unknown']
-        }
-      }))
-
-      riotNameCache.value = {
-        ...riotNameCache.value,
-        ...Object.fromEntries(resolvedNameEntries)
-      }
-    }
-
-    riotMatches.value = details.map((detail, index) => {
-      const participants = Array.isArray(detail?.info?.participants) ? detail.info.participants : []
-      const me = participants.find((participant) => participant?.puuid === account.puuid)
-      const metadataMatchId = detail?.metadata?.matchId || idsForDetail[index]
-
-      return {
-        matchId: metadataMatchId,
-        gameMode: detail?.info?.gameMode || '-',
-        gameCreation: detail?.info?.gameCreation || 0,
-        championName: me?.championName || '-',
-        kills: me?.kills ?? 0,
-        deaths: me?.deaths ?? 0,
-        assists: me?.assists ?? 0,
-        win: Boolean(me?.win),
-        blueTeam: participants.filter((participant) => participant?.teamId === 100).map(toPlayerView),
-        redTeam: participants.filter((participant) => participant?.teamId === 200).map(toPlayerView)
-      }
-    })
+    const response = await getMatchHistory()
+    const rawMatches = extractMatches(response).slice(0, recentMatchCount)
+    riotMatches.value = rawMatches.map((rawMatch, index) => normalizeMatch(rawMatch, index))
   } catch {
-    puuidError.value = 'puuid 조회에 실패했습니다. 입력값 또는 API 키를 확인해주세요.'
-    riotPuuid.value = ''
-    riotMatchIds.value = []
+    matchesError.value = '매칭 기록 조회에 실패했습니다. 백엔드 응답 스펙을 확인해주세요.'
     riotMatches.value = []
-    matchesError.value = '매치 상세 조회에 실패했습니다.'
   } finally {
-    isLoadingPuuid.value = false
     isLoadingMatches.value = false
   }
 }
 
-// 결과 팝업 열기
 const openResultPopup = () => {
   showResultPopup.value = true
   document.body.style.overflow = 'hidden'
 }
 
-// 결과 팝업 닫기
 const closeResultPopup = () => {
   showResultPopup.value = false
   document.body.style.overflow = ''
 }
 
-// 닉네임 툴팁 열기
 const openNameTooltip = (event, name) => {
   const rect = event.currentTarget.getBoundingClientRect()
   nameTooltip.value = {
@@ -411,7 +338,6 @@ const openNameTooltip = (event, name) => {
   }
 }
 
-// 닉네임 툴팁 닫기
 const closeNameTooltip = () => {
   if (!nameTooltip.value.visible) {
     return
@@ -419,14 +345,12 @@ const closeNameTooltip = () => {
   nameTooltip.value.visible = false
 }
 
-// 페이지 진입 시 이벤트 바인딩 및 프로필 로드
 onMounted(async () => {
   document.addEventListener('click', closeNameTooltip)
   loadFriendLineMap()
   await loadRiotProfile()
 })
 
-// 페이지 이탈 시 이벤트 해제
 onBeforeUnmount(() => {
   document.removeEventListener('click', closeNameTooltip)
 })
@@ -445,20 +369,16 @@ onBeforeUnmount(() => {
 
       <div class="card customInputBox">
         <div class="title between">
-          <h2>Riot API 테스트</h2>
+          <h2>매칭 기록 조회</h2>
         </div>
-        <p>게임이름: {{ riotGameName || '-' }}</p>
-        <p>태그: {{ riotTagLine || '-' }}</p>
-        <p>서버: {{ riotServer || '-' }}</p>
-        <button type="button" class="fullBtn" :disabled="isLoadingPuuid" @click="fetchPuuid">
-          {{ isLoadingPuuid ? '조회중...' : '최근 10경기 조회' }}
+        <button type="button" class="fullBtn" :disabled="isLoadingMatches" @click="fetchMatches">
+          {{ isLoadingMatches ? '조회중...' : '최근 10경기 조회' }}
         </button>
         <p>예정 호출 경로: {{ endpoint }}</p>
-        <p v-if="riotPuuid">조회된 puuid: {{ riotPuuid }}</p>
-        <p v-if="puuidError">{{ puuidError }}</p>
-        <p v-if="isLoadingMatches">매치 상세 조회중...</p>
+        <p v-if="riotPuuid">프로필 puuid: {{ riotPuuid }}</p>
+        <p v-else>백엔드 프로필 puuid가 아직 없습니다.</p>
+        <p v-if="isLoadingMatches">매칭 기록 조회중...</p>
         <p v-if="matchesError">{{ matchesError }}</p>
-        <p v-if="riotMatchIds.length">최근 매치 ID {{ riotMatchIds.length }}개를 가져왔습니다.</p>
         <p>메모: 최근 10개의 기록을 보여줍니다.</p>
       </div>
 
@@ -536,7 +456,6 @@ onBeforeUnmount(() => {
     </div>
   </div>
 
-  <!-- 경기 결과 설정 팝업 -->
   <div class="matchPopup" v-show="showResultPopup">
     <div class="popupOverlay" @click="closeResultPopup()"></div>
     <div class="popupContent card">
