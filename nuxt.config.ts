@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   vite: {
     server: {
-      allowedHosts: ['lol.patbungman.com']
+      // Dev server behind proxy/domain: allow external host headers.
+      allowedHosts: true
     }
   },
   modules: ['@pinia/nuxt'],
